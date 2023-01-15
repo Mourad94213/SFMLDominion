@@ -53,9 +53,8 @@ private:
 	void initWindow();
 	void initFonts();
 	void initText();
-    std::vector<Cartes*> AllCarte;
+    static std::vector<std::pair<Cartes*, int>> AllCarte;
     std::vector<Cartes*> Defausse;
-    static std::map<Cartes*,int> reservecarte;
 public:
     Partie();
     ~Partie();
