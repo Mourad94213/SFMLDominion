@@ -58,9 +58,6 @@ void Partie::initVariables()
     Vassal      *vassal         = new Vassal("Vassal", 3, 2, 0, 0, 0);
     Harbinger   *Presage        = new Harbinger("Harbinger", 3, 0, 0, 1, 1);
     Poacher     *Braconnier     = new Poacher("Poacher", 4, 1, 0, 1, 1);
-    //this->AllCarte.push_back(cuivre);
-    //this->AllCarte.push_back(Or);
-    //this->AllCarte.push_back(argent);
 }
 
 
@@ -117,13 +114,18 @@ void Partie::run()
 {
     while(this->window->isOpen()){
         this->pollEvents();
-        this->window->clear();
-        int incr=0;
+        this->render();
+    }
+}
+
+
+void Partie::render(){
+    this->window->clear();
+    int incr=0;
         for(int i=0; i<AllCarte.size(); i++){
             this->window->draw(*(Partie::AllCarte.at(i).first->Phycarte));
             AllCarte.at(i).first->Phycarte->setPosition(incr,0);
             incr+=10;
         }
-        this->window->display();
-    }
+    this->window->display();
 }

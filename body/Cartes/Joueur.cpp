@@ -14,6 +14,9 @@ int Joueur::getid(){
     return id;
 }
 
+void Joueur::piocher(){
+}
+
 void Joueur::acheter()
 {
 }

@@ -3,6 +3,7 @@
 
 void Adventurer::appliquer_effet()
 {
+    
 }
 
 

@@ -63,7 +63,7 @@ public:
 	sf::Event ev;
     void pollEvents();
     void run();
+    void render();
 };
-
 
 #endif

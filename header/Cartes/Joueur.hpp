@@ -18,6 +18,7 @@ public:
     virtual void acheter();
     virtual void defausser();
     virtual void jouer_carte();
+    virtual void piocher();
 };
 
 
