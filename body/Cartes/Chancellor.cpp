@@ -1,6 +1,14 @@
-#include <iostream>
-#include "Chancellor.hpp"
-#include <string>
+#include "../../header/Cartes/Chancellor.hpp"
 
-Chancellor::Chancellor(std::string name, int price, int money, int buy, int wdraw, int acti)
-    : Royaume(name,price,money,wdraw,buy,acti){}
+void Chancellor::appliquer_effet()
+{
+}
+
+
+Chancellor::Chancellor(
+    std::string name, int price, int money,int buy, int wdraw, int acti) : 
+    Royaume(name, price, money, wdraw, buy, acti)
+{}
+
+Chancellor::~Chancellor() {
+}

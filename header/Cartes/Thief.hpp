@@ -1,13 +1,13 @@
 #ifndef THIEF_H
 #define THIEF_H
-#include "Royaume.hpp"
+#include "../../header/Cartes/Royaume.hpp"
 
 class Thief : public Royaume
 {
 private:
     
 public:
-    void Thief::appliquer_effet();
+    void appliquer_effet();
     Thief(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Thief();
 };

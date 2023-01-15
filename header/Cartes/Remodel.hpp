@@ -1,8 +1,7 @@
 #ifndef REMODEL_H
 #define REMODEL_H
-#include "Royaume.hpp"
-#include <iostream>
-#include <SFML/Graphics.hpp>
+
+#include "../../header/Cartes/Royaume.hpp"
 
 class Remodel : public Royaume
 {

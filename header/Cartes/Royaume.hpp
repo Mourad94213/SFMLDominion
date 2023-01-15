@@ -1,8 +1,7 @@
 #ifndef ROYAUME_H
 #define ROYAUME_H
-#include "Cartes.hpp"
-#include <iostream>
-#include <string>
+#include "../../header/Cartes/Cartes.hpp"
+
 
 class Royaume : public Cartes
 {

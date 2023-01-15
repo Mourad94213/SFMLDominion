@@ -1,13 +1,13 @@
 #ifndef CHAPEL_H
 #define CHAPEL_H
-#include "Royaume.hpp"
+#include "../../header/Cartes/Royaume.hpp"
 
 class Chapel : public Royaume
 {
 private:
     
 public:
-    void Chapel::appliquer_effet();
+    void appliquer_effet();
     Chapel(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Chapel();
 };

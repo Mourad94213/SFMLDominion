@@ -1,13 +1,13 @@
 #ifndef SPY_H
 #define SPY_H
-#include "Royaume.hpp"
+#include "../../header/Cartes/Royaume.hpp"
 
 class Spy : public Royaume
 {
 private:
     
 public:
-    void Spy::appliquer_effet();
+    void appliquer_effet();
     Spy(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Spy();
 };

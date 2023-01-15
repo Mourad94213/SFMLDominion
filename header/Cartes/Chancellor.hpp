@@ -1,13 +1,13 @@
 #ifndef CHANCELLOR_H
 #define CHANCELLOR_H
-#include "Royaume.hpp"
+#include "../../header/Cartes/Royaume.hpp"
 
 class Chancellor : public Royaume
 {
 private:
     
 public:
-    void Chancellor::appliquer_effet();
+    void appliquer_effet();
     Chancellor(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Chancellor();
 };

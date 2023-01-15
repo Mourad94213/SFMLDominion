@@ -1,8 +1,12 @@
-#ifndef CARTES_H
-#define CARTES_H
-#include "Tresor.hpp"
-#include "Victoire.hpp"
-#include "Royaume.hpp"
+#ifndef PARTIE_H
+#define PARTIE_H
+
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include "Cartes.hpp"
+#include "Joueur.hpp"
 #include "Adventurer.hpp"
 #include "Artisan.hpp"
 #include "Bandit.hpp"
@@ -35,22 +39,31 @@
 #include "Witch.hpp"
 #include "Woodcutter.hpp"
 #include "Workshop.hpp"
-#include <iostream>
-#include <vector>
-#include <./SFML/Graphics.hpp>
-#include <./SFML/Window.hpp>
-#include <./SFML/System.hpp>
+#include "Tresor.hpp"
+#include "Victoire.hpp"
+#include "Royaume.hpp"
 
-class Cartes
+#include <map>
+#include <vector>
+
+class Partie
 {
 private:
-    std::string nom;
-    int cout;
+    void initVariables();
+	void initWindow();
+	void initFonts();
+	void initText();
+    std::vector<Cartes*> AllCarte;
+    std::vector<Cartes*> Defausse;
+    static std::map<Cartes*,int> reservecarte;
 public:
-    sf::Texture *textCarte;
-    sf::RectangleShape *Phycarte;
-    Cartes(std::string nom, int cout);
-    ~Cartes();
+    Partie();
+    ~Partie();
+    sf::RenderWindow* window;
+	sf::VideoMode videoMode;
+	sf::Event ev;
+    void pollEvents();
+    void run();
 };
 
 

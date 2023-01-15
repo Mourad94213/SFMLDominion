@@ -1,13 +1,13 @@
 #ifndef ARTISAN_H
 #define ARTISAN_H
-#include "Royaume.hpp"
+#include "../../header/Cartes/Royaume.hpp"
 
 class Artisan : public Royaume
 {
 private:
     
 public:
-    void Artisan::appliquer_effet();
+    void appliquer_effet();
     Artisan(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Artisan();
 };
