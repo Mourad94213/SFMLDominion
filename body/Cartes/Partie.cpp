@@ -7,18 +7,24 @@ void Partie::initVariables()
     Tresor *cuivre = new Tresor("Cuivre",0,1);
     Tresor *argent = new Tresor("Argent",3,2);
     Tresor *Or = new Tresor("Or",6,3);
+    Victoire *Domaine = new Victoire("Domaine",2,1);
+    Victoire *Duche = new Victoire("Duché",5,3);
+    Victoire *Province = new Victoire("Province",8,6);
+    Victoire *Malediction = new Victoire("Malédiction",0,-1);
+
 	Partie::reservecarte.insert(std::pair<Tresor*,int>(cuivre,60));
     Partie::reservecarte.insert(std::pair<Tresor*,int>(argent,40));
     Partie::reservecarte.insert(std::pair<Tresor*,int>(Or,30));
-    Partie::reservecarte.insert(std::pair<Victoire*,int>(new Victoire("Domaine",2,1),24));
-    Partie::reservecarte.insert(std::pair<Victoire*,int>(new Victoire("Duché",5,3),12));
+    Partie::reservecarte.insert(std::pair<Victoire*,int>(Domaine,24));
+    Partie::reservecarte.insert(std::pair<Victoire*,int>(Duche,12));
+    
     if(Joueur::getid()>2){
-        Partie::reservecarte.insert(std::pair<Victoire*,int>(new Victoire("Province",8,6),12));
+        Partie::reservecarte.insert(std::pair<Victoire*,int>(Province,12));
     }
     else{
-        Partie::reservecarte.insert(std::pair<Victoire*,int>(new Victoire("Province",8,6),8));
+        Partie::reservecarte.insert(std::pair<Victoire*,int>(Province,8));
     }
-    Partie::reservecarte.insert(std::pair<Victoire*,int>(new Victoire("Malédiction",0,-1),30));
+    Partie::reservecarte.insert(std::pair<Victoire*,int>(Malediction,30));
     
     Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
     Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
