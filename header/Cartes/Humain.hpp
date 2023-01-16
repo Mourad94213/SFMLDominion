@@ -8,7 +8,7 @@ class Humain : public Joueur
 private:
     std::string pseudo;
 public:
-    Humain(int id, std::string pseudo);
+    Humain();
     ~Humain();
     void acheter();
     void defausser(std::vector<Cartes*> main);

@@ -1,7 +1,9 @@
 #include "../../header/Cartes/Humain.hpp"
 
-Humain::Humain(int id, std::string name):
-    Joueur(), pseudo(name){}
+Humain::Humain():
+    Joueur(){
+
+}
 
 Humain::~Humain()
 {
