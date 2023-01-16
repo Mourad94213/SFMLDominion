@@ -13,7 +13,6 @@ public:
     void acheter();
     void defausser(std::vector<Cartes*> main);
     void jouer_carte(Cartes* C);
-    void piocher();
 };
 
 #endif

@@ -8,9 +8,9 @@ void Partie::initVariables()
     Tresor *argent = new Tresor("Argent",3,2);
     Tresor *Or = new Tresor("Or",6,3);
     Victoire *Domaine = new Victoire("Domaine",2,1);
-    Victoire *Duche = new Victoire("Duché",5,3);
+    Victoire *Duche = new Victoire("Duche",5,3);
     Victoire *Province = new Victoire("Province",8,6);
-    Victoire *Malediction = new Victoire("Malédiction",0,-1);
+    Victoire *Malediction = new Victoire("Malediction",0,-1);
 
 	Partie::AllCarte.push_back(std::pair<Tresor*,int>(cuivre,60));
     Partie::AllCarte.push_back(std::pair<Tresor*,int>(argent,40));
@@ -51,20 +51,13 @@ void Partie::initVariables()
     Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
     Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
     Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);
-    Bandit      *bandit         = new Bandit("Bandit", 5, 0, 0, 0, 0);
-    Sentry      *Sentinelle     = new Sentry("Sentry", 5, 0, 0, 1, 1);
-    Artisan     *artisan        = new Artisan("Artisan", 6, 0, 0, 0, 0);
-    Merchant    *Marchand       = new Merchant("Merchant", 3, 0, 0, 1, 1);
-    Vassal      *vassal         = new Vassal("Vassal", 3, 2, 0, 0, 0);
-    Harbinger   *Presage        = new Harbinger("Harbinger", 3, 0, 0, 1, 1);
-    Poacher     *Braconnier     = new Poacher("Poacher", 4, 1, 0, 1, 1);
 }
 
 
 void Partie::initWindow()
 {
-    this->videoMode.height = 600;
-	this->videoMode.width = 800;
+    this->videoMode.height = 1000;
+	this->videoMode.width = 1900;
 	this->window = new sf::RenderWindow(this->videoMode, "Dominion", sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(60);
 }
@@ -125,7 +118,7 @@ void Partie::render(){
         for(int i=0; i<AllCarte.size(); i++){
             this->window->draw(*(Partie::AllCarte.at(i).first->Phycarte));
             AllCarte.at(i).first->Phycarte->setPosition(incr,0);
-            incr+=10;
+            incr+=100;
         }
     this->window->display();
 }
