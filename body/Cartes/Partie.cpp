@@ -302,6 +302,10 @@ void Partie::menu(){
             this->window->draw(*(this->Lbutton));
             this->window->draw(*(this->Ltext));
             this->window->display();
+            /*delete backgroundtext;
+            delete buttontext;
+            delete boutonDominiontexture;
+            delete Rbuttontexture;*/
     }
 }
 
@@ -312,7 +316,7 @@ void Partie::choixselection(){
        //Humain *humain1 = new Humain();
     }*/
 
-    Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
+    /*Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
     Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
     Mine        *mine           = new Mine("Mine", 5, 0, 0, 0, 0);
     Moneylender *PreteurSurGage = new Moneylender("Moneylender", 4, 0, 0, 0, 0);
@@ -336,7 +340,7 @@ void Partie::choixselection(){
     Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
     Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
     Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
-    Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);
+    Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);*/
 /*
     std::vector<Cartes*> cartechoisijoueur;
 
@@ -410,6 +414,8 @@ void Partie::choixselection(){
     this->window->draw(*(this->boutonselectionhumain));
     this->window->draw(*(this->boutonselectionia));
     this->window->display();
+    /*delete bouton_selection;
+    delete bouton_selection_chiffre;*/
 }
 
 void Partie::jeu(){
@@ -425,6 +431,8 @@ void Partie::regle(){
         window->draw(*(this->regletop));
         window->draw(*(this->regletext));
         this->window->display();
+        /*delete panneauRegletexture;
+        delete panneauRegletoptexture;*/
     }
 }
 
