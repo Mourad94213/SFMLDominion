@@ -1,6 +1,11 @@
 #include "../../header/Cartes/Partie.hpp"
 
 std::vector<std::pair<Cartes*, int>> Partie::AllCarte;
+int nbjoueurhumain=0;
+bool aclique0=false;
+bool aclique1=false;
+bool aclique2=false;
+bool aclique3=false;
 
 void Partie::initVariables()
 {
@@ -111,33 +116,79 @@ void Partie::initObjet(){
     this->boutonselectionhumain->setTexture(*bouton_selection);
     this->boutonselectionhumain->setScale(0.2,0.2);
     this->boutonselectionhumain->setOrigin(sf::Vector2f(2306/2,1064/2));
-    this->boutonselectionhumain->setPosition(sf::Vector2f(window->getSize().x/2,window->getSize().y/2-300));
+    this->boutonselectionhumain->setPosition(sf::Vector2f(500,window->getSize().y/2-300));
 
     this->boutonselectionia = new sf::Sprite();
     this->boutonselectionia->setTexture(*bouton_selection);
     this->boutonselectionia->setScale(0.2,0.2);
     this->boutonselectionia->setOrigin(sf::Vector2f(2306/2,1064/2));
-    this->boutonselectionia->setPosition(sf::Vector2f(window->getSize().x/2,window->getSize().y/2-100));
+    this->boutonselectionia->setPosition(sf::Vector2f(500,window->getSize().y/2-50));
 
     this->boutonselection1h = new sf::Sprite();
     this->boutonselection1h->setTexture(*bouton_selection_chiffre);
+    this->boutonselection1h->setScale(0.14,0.14);
+    this->boutonselection1h->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection1h->setPosition(sf::Vector2f(905,window->getSize().y/2-290));
+
     this->boutonselection2h = new sf::Sprite();
     this->boutonselection2h->setTexture(*bouton_selection_chiffre);
+    this->boutonselection2h->setScale(0.14,0.14);
+    this->boutonselection2h->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection2h->setPosition(sf::Vector2f(1155,window->getSize().y/2-290));
+
     this->boutonselection3h = new sf::Sprite();
     this->boutonselection3h->setTexture(*bouton_selection_chiffre);
+    this->boutonselection3h->setScale(0.14,0.14);
+    this->boutonselection3h->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection3h->setPosition(sf::Vector2f(1405,window->getSize().y/2-290));
+
     this->boutonselection4h = new sf::Sprite();
     this->boutonselection4h->setTexture(*bouton_selection_chiffre);
+    this->boutonselection4h->setScale(0.14,0.14);
+    this->boutonselection4h->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection4h->setPosition(sf::Vector2f(1655,window->getSize().y/2-290));
+
     this->boutonselection1ia = new sf::Sprite();
     this->boutonselection1ia->setTexture(*bouton_selection_chiffre);
+    this->boutonselection1ia->setScale(0.14,0.14);
+    this->boutonselection1ia->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection1ia->setPosition(sf::Vector2f(905,window->getSize().y/2-40));
+
     this->boutonselection2ia = new sf::Sprite();
     this->boutonselection2ia->setTexture(*bouton_selection_chiffre);
+    this->boutonselection2ia->setScale(0.14,0.14);
+    this->boutonselection2ia->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection2ia->setPosition(sf::Vector2f(1155,window->getSize().y/2-40));
+
     this->boutonselection3ia = new sf::Sprite();
     this->boutonselection3ia->setTexture(*bouton_selection_chiffre);
+    this->boutonselection3ia->setScale(0.14,0.14);
+    this->boutonselection3ia->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection3ia->setPosition(sf::Vector2f(1405,window->getSize().y/2-40));
+
     this->boutonselection4ia = new sf::Sprite();
     this->boutonselection4ia->setTexture(*bouton_selection_chiffre);
+    this->boutonselection4ia->setScale(0.14,0.14);
+    this->boutonselection4ia->setOrigin(sf::Vector2f(1318/2,1190/2));
+    this->boutonselection4ia->setPosition(sf::Vector2f(1655,window->getSize().y/2-40));
 
     this->boutonselectioncartes = new sf::Sprite();
     this->boutonselectioncartes->setTexture(*bouton_selection);
+    this->boutonselectioncartes->setScale(0.2,0.2);
+    this->boutonselectioncartes->setOrigin(sf::Vector2f(2306/2,1064/2));
+    this->boutonselectioncartes->setPosition(sf::Vector2f(400,window->getSize().y/2+200));
+
+    this->boutonselectioncartes10 = new sf::Sprite();
+    this->boutonselectioncartes10->setTexture(*Rbuttontexture);
+    this->boutonselectioncartes10->setScale(sf::Vector2f(0.65,0.65));
+    this->boutonselectioncartes10->setOrigin(sf::Vector2f(735/2,339/2));
+    this->boutonselectioncartes10->setPosition(sf::Vector2f(1000,window->getSize().y/2+220));
+
+    this->boutonselectioncartesrng = new sf::Sprite();
+    this->boutonselectioncartesrng->setTexture(*Rbuttontexture);
+    this->boutonselectioncartesrng->setScale(sf::Vector2f(0.65,0.65));
+    this->boutonselectioncartesrng->setOrigin(sf::Vector2f(735/2,339/2));
+    this->boutonselectioncartesrng->setPosition(sf::Vector2f(1600,window->getSize().y/2+220));
 
     // BACKGROUND //
 
@@ -214,6 +265,126 @@ void Partie::initText()
     this->regletext->setFillColor(sf::Color(252,238,170));
     this->regletext->setPosition(sf::Vector2f(140,330));
 
+    // SELECTION 
+
+    this->Humainselectiontext = new sf::Text();
+    this->Humainselectiontext->setFont(*font);
+    this->Humainselectiontext->setString("Nombre de joueur total");
+    this->Humainselectiontext->setCharacterSize(40);
+    this->Humainselectiontext->setOutlineThickness(2);
+    this->Humainselectiontext->setOutlineColor(sf::Color::Black);
+    this->Humainselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Humainselectiontext->setPosition(sf::Vector2f(350,190));
+
+    this->Iaselectiontext = new sf::Text();
+    this->Iaselectiontext->setFont(*font);
+    this->Iaselectiontext->setString("Dont IA");
+    this->Iaselectiontext->setCharacterSize(40);
+    this->Iaselectiontext->setOutlineThickness(2);
+    this->Iaselectiontext->setOutlineColor(sf::Color::Black);
+    this->Iaselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Iaselectiontext->setPosition(sf::Vector2f(440,445));
+
+    this->chiffre1 = new sf::Text();
+    this->chiffre1->setFont(*font);
+    this->chiffre1->setString("1");
+    this->chiffre1->setCharacterSize(40);
+    this->chiffre1->setOutlineThickness(2);
+    this->chiffre1->setOutlineColor(sf::Color::Black);
+    this->chiffre1->setFillColor(sf::Color(252,238,170));
+    this->chiffre1->setPosition(sf::Vector2f(900,190));
+
+    this->chiffre2 = new sf::Text();
+    this->chiffre2->setFont(*font);
+    this->chiffre2->setString("2");
+    this->chiffre2->setCharacterSize(40);
+    this->chiffre2->setOutlineThickness(2);
+    this->chiffre2->setOutlineColor(sf::Color::Black);
+    this->chiffre2->setFillColor(sf::Color(252,238,170));
+    this->chiffre2->setPosition(sf::Vector2f(1150,190));
+
+    this->chiffre3 = new sf::Text();
+    this->chiffre3->setFont(*font);
+    this->chiffre3->setString("3");
+    this->chiffre3->setCharacterSize(40);
+    this->chiffre3->setOutlineThickness(2);
+    this->chiffre3->setOutlineColor(sf::Color::Black);
+    this->chiffre3->setFillColor(sf::Color(252,238,170));
+    this->chiffre3->setPosition(sf::Vector2f(1400,190));
+
+    this->chiffre4 = new sf::Text();
+    this->chiffre4->setFont(*font);
+    this->chiffre4->setString("4");
+    this->chiffre4->setCharacterSize(40);
+    this->chiffre4->setOutlineThickness(2);
+    this->chiffre4->setOutlineColor(sf::Color::Black);
+    this->chiffre4->setFillColor(sf::Color(252,238,170));
+    this->chiffre4->setPosition(sf::Vector2f(1650,190));
+
+    this->chiffre0ia = new sf::Text();
+    this->chiffre0ia->setFont(*font);
+    this->chiffre0ia->setString("0");
+    this->chiffre0ia->setCharacterSize(40);
+    this->chiffre0ia->setOutlineThickness(2);
+    this->chiffre0ia->setOutlineColor(sf::Color::Black);
+    this->chiffre0ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre0ia->setPosition(sf::Vector2f(900,445));
+
+    this->chiffre1ia = new sf::Text();
+    this->chiffre1ia->setFont(*font);
+    this->chiffre1ia->setString("1");
+    this->chiffre1ia->setCharacterSize(40);
+    this->chiffre1ia->setOutlineThickness(2);
+    this->chiffre1ia->setOutlineColor(sf::Color::Black);
+    this->chiffre1ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre1ia->setPosition(sf::Vector2f(1150,445));
+
+    this->chiffre2ia = new sf::Text();
+    this->chiffre2ia->setFont(*font);
+    this->chiffre2ia->setString("2");
+    this->chiffre2ia->setCharacterSize(40);
+    this->chiffre2ia->setOutlineThickness(2);
+    this->chiffre2ia->setOutlineColor(sf::Color::Black);
+    this->chiffre2ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre2ia->setPosition(sf::Vector2f(1390,445));
+
+    this->chiffre3ia = new sf::Text();
+    this->chiffre3ia->setFont(*font);
+    this->chiffre3ia->setString("3");
+    this->chiffre3ia->setCharacterSize(40);
+    this->chiffre3ia->setOutlineThickness(2);
+    this->chiffre3ia->setOutlineColor(sf::Color::Black);
+    this->chiffre3ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre3ia->setPosition(sf::Vector2f(1650,445));
+
+    // SELECTION CARTES
+    
+    this->selectioncarte = new sf::Text();
+    this->selectioncarte->setFont(*font);
+    this->selectioncarte->setString("Choix des cartes");
+    this->selectioncarte->setCharacterSize(40);
+    this->selectioncarte->setOutlineThickness(2);
+    this->selectioncarte->setOutlineColor(sf::Color::Black);
+    this->selectioncarte->setFillColor(sf::Color(252,238,170));
+    this->selectioncarte->setPosition(sf::Vector2f(280,695));
+
+    this->selectioncarte10 = new sf::Text();
+    this->selectioncarte10->setFont(*font);
+    this->selectioncarte10->setString("10 de base");
+    this->selectioncarte10->setCharacterSize(40);
+    this->selectioncarte10->setOutlineThickness(2);
+    this->selectioncarte10->setOutlineColor(sf::Color::Black);
+    this->selectioncarte10->setFillColor(sf::Color(252,238,170));
+    this->selectioncarte10->setPosition(sf::Vector2f(940,700));
+
+    this->selectioncarterng = new sf::Text();
+    this->selectioncarterng->setFont(*font);
+    this->selectioncarterng->setString("Aleatoire");
+    this->selectioncarterng->setCharacterSize(40);
+    this->selectioncarterng->setOutlineThickness(2);
+    this->selectioncarterng->setOutlineColor(sf::Color::Black);
+    this->selectioncarterng->setFillColor(sf::Color(252,238,170));
+    this->selectioncarterng->setPosition(sf::Vector2f(1535,700));
 }
 
 
@@ -234,10 +405,8 @@ Partie::~Partie()
 void Partie::pollEvents()
 {
 	//Event polling
-    std::cout<<"a";
 	while (this->window->pollEvent(this->ev))
 	{
-        std::cout <<"b";
 		switch (this->ev.type)
 		{
 		case sf::Event::Closed:
@@ -259,12 +428,11 @@ void Partie::pollEvents()
 void Partie::run()
 {
     while(this->window->isOpen()){
-        std::cout<<"d";
         this->pollEvents();
-        //this->menu();
+        this->menu();
         this->choixselection();
         //this->jeu();
-        //this->regle();
+        this->regle();
         //this->render();
     }
 }
@@ -276,18 +444,19 @@ void Partie::menu(){
         this->window->clear();
         if(this->ev.type==sf::Event::MouseButtonPressed){
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                if(this->buttonplay->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool){
-
-                    jeubool=true;
+                if(this->buttonplay->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !selectionbool){
+                    selectionbool=true;
+                    jeubool=false;
                     reglebool=false;
                     menubool=false;
                 }
-                if(this->Rbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool){
+                if(this->Rbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !selectionbool){
                     reglebool=true;
+                    selectionbool=false;
                     jeubool=false;
                     menubool=false;
                 }
-                if(this->Lbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))  && !jeubool && !reglebool){
+                if(this->Lbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))  && !jeubool && !reglebool && !selectionbool){
                     this->window->close();
                 }
             }
@@ -310,112 +479,187 @@ void Partie::menu(){
 }
 
 void Partie::choixselection(){
-    std::cout<<"c";
-    /*bool b=true;
-    if(b){ // EVENT JOUEUR
-       //Humain *humain1 = new Humain();
-    }*/
+    if(this->selectionbool==true){
+        this->window->clear();
+        if(!aclique0 || !aclique1 || !aclique2 || !aclique3) this->window->draw(sf::Sprite(*this->backgroundtext));  
+        if(this->ev.type==sf::Event::MouseButtonPressed || aclique0 || aclique1 || aclique2 || aclique3){
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) || aclique0 || aclique1 || aclique2 || aclique3){
+                if((this->boutonselection1h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool) || aclique0 && !aclique1 && !aclique2 && !aclique3){
+                    nbjoueurhumain=1;
+                    aclique0=true;
+                    aclique1=false;
+                    aclique2=false;
+                    aclique3=false;
+                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
+                    this->window->draw(*(this->boutonselection1ia));
+                    this->window->draw(*(this->chiffre0ia));
+                    this->window->draw(*(this->boutonselection2ia));
+                    this->window->draw(*(this->chiffre1ia));
+                    this->window->draw(*(this->boutonselection3ia));
+                    this->window->draw(*(this->chiffre2ia));
+                    this->window->draw(*(this->boutonselection4ia));
+                    this->window->draw(*(this->chiffre3ia));
+                    
+                }
+                if(this->boutonselection2h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || aclique1 && !aclique0 && !aclique2 && !aclique3){
+                    nbjoueurhumain=2;
+                    aclique0=false;
+                    aclique1=true;
+                    aclique2=false;
+                    aclique3=false;
+                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
+                    this->window->draw(*(this->boutonselection1ia));
+                    this->window->draw(*(this->chiffre0ia));
+                    this->window->draw(*(this->boutonselection2ia));
+                    this->window->draw(*(this->chiffre1ia));
+                    this->window->draw(*(this->boutonselection3ia));
+                    this->window->draw(*(this->chiffre2ia));
 
-    /*Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
-    Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
-    Mine        *mine           = new Mine("Mine", 5, 0, 0, 0, 0);
-    Moneylender *PreteurSurGage = new Moneylender("Moneylender", 4, 0, 0, 0, 0);
-    Witch       *Sorciere       = new Witch("Witch", 5, 0, 0, 2, 0);
-    Moat        *Douves         = new Moat("Moat", 2, 0, 0, 2, 0);
-    Market      *Marche         = new Market("Market", 5, 1, 1, 1, 1);
-    Gardens     *Jardins        = new Gardens("Gardens", 4, 0, 0, 0, 0);
-    Festival    *festival       = new Festival("Festival", 5, 2, 1, 0, 2);
-    CouncilRoom *SalleDuConseil = new CouncilRoom("CouncilRoom", 5, 0, 1, 4, 0);
-    ThroneRoom  *SalleDuTrone   = new ThroneRoom("ThroneRoom", 4, 0, 0, 0, 0);
-    Smithy      *Forgeron       = new Smithy("Smithy", 4, 0, 0, 3, 0);
-    Laboratory  *Laboratoire    = new Laboratory("Laboratory", 5, 0, 0, 2, 1);
-    Village     *village        = new Village("Village", 3, 0, 0, 1, 2);
-    Militia     *Milice         = new Militia("Militia", 4, 2, 0, 0, 0);
-    Bureaucrat  *Bureaucrate    = new Bureaucrat("Bureaucrat", 4, 0, 0, 0, 0);
-    Library     *Bibliotheque   = new Library("Library", 5, 0, 0, 0, 0);
-    Workshop    *atelier        = new Workshop("Workshop", 3, 0, 0, 0, 0);
-    Chapel      *Chapelle       = new Chapel("Chapel", 2, 0, 0, 0, 0);
-    Thief       *Voleur         = new Thief("Thief", 4, 0, 0, 0, 0);
-    Feast       *Festin         = new Feast("Feast", 4, 0, 0, 0, 0);
-    Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
-    Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
-    Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
-    Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);*/
-/*
-    std::vector<Cartes*> cartechoisijoueur;
-
-    cartechoisijoueur.push_back(Cave);
-    cartechoisijoueur.push_back(Renovation);
-    cartechoisijoueur.push_back(mine);
-    cartechoisijoueur.push_back(PreteurSurGage);
-    cartechoisijoueur.push_back(Sorciere);
-    cartechoisijoueur.push_back(Douves);
-    cartechoisijoueur.push_back(Marche);
-    cartechoisijoueur.push_back(Jardins);
-    cartechoisijoueur.push_back(festival);
-    cartechoisijoueur.push_back(SalleDuConseil);
-    cartechoisijoueur.push_back(SalleDuTrone);
-    cartechoisijoueur.push_back(Forgeron);
-    cartechoisijoueur.push_back(Laboratoire);
-    cartechoisijoueur.push_back(village);
-    cartechoisijoueur.push_back(Milice);
-    cartechoisijoueur.push_back(Bureaucrate);
-    cartechoisijoueur.push_back(Bibliotheque);
-    cartechoisijoueur.push_back(atelier);
-    cartechoisijoueur.push_back(Chapelle);
-    cartechoisijoueur.push_back(Voleur);
-    cartechoisijoueur.push_back(Festin);
-    cartechoisijoueur.push_back(Chancelier);
-    cartechoisijoueur.push_back(Aventurier);
-    cartechoisijoueur.push_back(Bucheron);
-    cartechoisijoueur.push_back(Espion);
-    bool a=true; // BOUTON SHUFFLE SELECTION CARTES
-        if(a){
-            auto rd = std::random_device {}; 
-            auto rng = std::default_random_engine { rd() };
-            std::shuffle(std::begin(cartechoisijoueur), std::end(cartechoisijoueur), rng);
-            for(int i=0; i<10; i++){
-                Partie::AllCarte.push_back(std::pair(cartechoisijoueur.at(i), 10));
-            }
-            for(int i=10; i<cartechoisijoueur.size(); i++){
-                delete cartechoisijoueur.at(i);
+                }
+                if(this->boutonselection3h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || !aclique0 && !aclique1 && aclique2 && !aclique3){
+                    nbjoueurhumain=3;
+                    aclique0=false;
+                    aclique1=false;
+                    aclique2=true;
+                    aclique3=false;
+                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
+                    this->window->draw(*(this->boutonselection1ia));
+                    this->window->draw(*(this->chiffre0ia));
+                    this->window->draw(*(this->boutonselection2ia));
+                    this->window->draw(*(this->chiffre1ia));
+                    
+                }
+                if(this->boutonselection4h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || !aclique0 && !aclique1 && !aclique2 && aclique3){
+                    nbjoueurhumain=4;
+                    aclique0=false;
+                    aclique1=false;
+                    aclique2=false;
+                    aclique3=true;
+                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
+                    this->window->draw(*(this->boutonselection1ia));
+                    this->window->draw(*(this->chiffre0ia));
+                    
+                }
+                // EVENT SEPARE PR CARTES
+                }
             }
         }
-        else{
-            Partie::AllCarte.push_back(std::pair(Forgeron, 10));
-            Partie::AllCarte.push_back(std::pair(Cave, 10));
-            Partie::AllCarte.push_back(std::pair(Chapelle, 10));
-            Partie::AllCarte.push_back(std::pair(Renovation, 10));  
-            Partie::AllCarte.push_back(std::pair(village, 10)); 
-            Partie::AllCarte.push_back(std::pair(festival, 10)); 
-            Partie::AllCarte.push_back(std::pair(Laboratoire, 10)); 
-            Partie::AllCarte.push_back(std::pair(Sorciere, 10)); 
-            Partie::AllCarte.push_back(std::pair(Marche, 10)); 
-            Partie::AllCarte.push_back(std::pair(mine, 10));
-            delete PreteurSurGage;
-            delete Douves;
-            delete Jardins;
-            delete SalleDuConseil;
-            delete SalleDuTrone;
-            delete Milice;
-            delete Bureaucrate;
-            delete atelier;
-            delete Bibliotheque;
-            delete Voleur;
-            delete Chancelier;
-            delete Festin;
-            delete Aventurier;
-            delete Espion;
-            delete Bucheron;
-        }*/
 
-    this->window->clear();
-    this->window->draw(sf::Sprite(*this->backgroundtext));
-    this->window->draw(*(this->boutonselectionhumain));
-    this->window->draw(*(this->boutonselectionia));
-    this->window->display();
-    /*delete bouton_selection;
-    delete bouton_selection_chiffre;*/
+        /*Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
+        Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
+        Mine        *mine           = new Mine("Mine", 5, 0, 0, 0, 0);
+        Moneylender *PreteurSurGage = new Moneylender("Moneylender", 4, 0, 0, 0, 0);
+        Witch       *Sorciere       = new Witch("Witch", 5, 0, 0, 2, 0);
+        Moat        *Douves         = new Moat("Moat", 2, 0, 0, 2, 0);
+        Market      *Marche         = new Market("Market", 5, 1, 1, 1, 1);
+        Gardens     *Jardins        = new Gardens("Gardens", 4, 0, 0, 0, 0);
+        Festival    *festival       = new Festival("Festival", 5, 2, 1, 0, 2);
+        CouncilRoom *SalleDuConseil = new CouncilRoom("CouncilRoom", 5, 0, 1, 4, 0);
+        ThroneRoom  *SalleDuTrone   = new ThroneRoom("ThroneRoom", 4, 0, 0, 0, 0);
+        Smithy      *Forgeron       = new Smithy("Smithy", 4, 0, 0, 3, 0);
+        Laboratory  *Laboratoire    = new Laboratory("Laboratory", 5, 0, 0, 2, 1);
+        Village     *village        = new Village("Village", 3, 0, 0, 1, 2);
+        Militia     *Milice         = new Militia("Militia", 4, 2, 0, 0, 0);
+        /*Bureaucrat  *Bureaucrate    = new Bureaucrat("Bureaucrat", 4, 0, 0, 0, 0);
+        Library     *Bibliotheque   = new Library("Library", 5, 0, 0, 0, 0);
+        Workshop    *atelier        = new Workshop("Workshop", 3, 0, 0, 0, 0);
+        Chapel      *Chapelle       = new Chapel("Chapel", 2, 0, 0, 0, 0);
+        Thief       *Voleur         = new Thief("Thief", 4, 0, 0, 0, 0);
+        Feast       *Festin         = new Feast("Feast", 4, 0, 0, 0, 0);
+        Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
+        Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
+        Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
+        Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);*/
+    /*
+        std::vector<Cartes*> cartechoisijoueur;
+
+        cartechoisijoueur.push_back(Cave);
+        cartechoisijoueur.push_back(Renovation);
+        cartechoisijoueur.push_back(mine);
+        cartechoisijoueur.push_back(PreteurSurGage);
+        cartechoisijoueur.push_back(Sorciere);
+        cartechoisijoueur.push_back(Douves);
+        cartechoisijoueur.push_back(Marche);
+        cartechoisijoueur.push_back(Jardins);
+        cartechoisijoueur.push_back(festival);
+        cartechoisijoueur.push_back(SalleDuConseil);
+        cartechoisijoueur.push_back(SalleDuTrone);
+        cartechoisijoueur.push_back(Forgeron);
+        cartechoisijoueur.push_back(Laboratoire);
+        cartechoisijoueur.push_back(village);
+        cartechoisijoueur.push_back(Milice);
+        cartechoisijoueur.push_back(Bureaucrate);
+        cartechoisijoueur.push_back(Bibliotheque);
+        cartechoisijoueur.push_back(atelier);
+        cartechoisijoueur.push_back(Chapelle);
+        cartechoisijoueur.push_back(Voleur);
+        cartechoisijoueur.push_back(Festin);
+        cartechoisijoueur.push_back(Chancelier);
+        cartechoisijoueur.push_back(Aventurier);
+        cartechoisijoueur.push_back(Bucheron);
+        cartechoisijoueur.push_back(Espion);
+        bool a=true; // BOUTON SHUFFLE SELECTION CARTES
+            if(a){
+                auto rd = std::random_device {}; 
+                auto rng = std::default_random_engine { rd() };
+                std::shuffle(std::begin(cartechoisijoueur), std::end(cartechoisijoueur), rng);
+                for(int i=0; i<10; i++){
+                    Partie::AllCarte.push_back(std::pair(cartechoisijoueur.at(i), 10));
+                }
+                for(int i=10; i<cartechoisijoueur.size(); i++){
+                    delete cartechoisijoueur.at(i);
+                }
+            }
+            else{
+                Partie::AllCarte.push_back(std::pair(Forgeron, 10));
+                Partie::AllCarte.push_back(std::pair(Cave, 10));
+                Partie::AllCarte.push_back(std::pair(Chapelle, 10));
+                Partie::AllCarte.push_back(std::pair(Renovation, 10));  
+                Partie::AllCarte.push_back(std::pair(village, 10)); 
+                Partie::AllCarte.push_back(std::pair(festival, 10)); 
+                Partie::AllCarte.push_back(std::pair(Laboratoire, 10)); 
+                Partie::AllCarte.push_back(std::pair(Sorciere, 10)); 
+                Partie::AllCarte.push_back(std::pair(Marche, 10)); 
+                Partie::AllCarte.push_back(std::pair(mine, 10));
+                delete PreteurSurGage;
+                delete Douves;
+                delete Jardins;
+                delete SalleDuConseil;
+                delete SalleDuTrone;
+                delete Milice;
+                delete Bureaucrate;
+                delete atelier;
+                delete Bibliotheque;
+                delete Voleur;
+                delete Chancelier;
+                delete Festin;
+                delete Aventurier;
+                delete Espion;
+                delete Bucheron;
+            }*/
+        std::cout<<nbjoueurhumain;
+        this->window->draw(*(this->boutonselectionhumain));
+        this->window->draw(*(this->boutonselectionia));
+        this->window->draw(*(this->Humainselectiontext));
+        this->window->draw(*(this->Iaselectiontext));
+        this->window->draw(*(this->boutonselection1h));
+        this->window->draw(*(this->chiffre1));
+        this->window->draw(*(this->boutonselection2h));
+        this->window->draw(*(this->chiffre2));
+        this->window->draw(*(this->boutonselection3h));
+        this->window->draw(*(this->chiffre3));
+        this->window->draw(*(this->boutonselection4h));
+        this->window->draw(*(this->chiffre4));
+        this->window->draw(*(this->boutonselectioncartes));
+        this->window->draw(*(this->boutonselectioncartes10));
+        this->window->draw(*(this->boutonselectioncartesrng));
+        this->window->draw(*(this->selectioncarte));
+        this->window->draw(*(this->selectioncarte10));
+        this->window->draw(*(this->selectioncarterng));
+        this->window->display();
+        /*delete bouton_selection;
+        delete bouton_selection_chiffre;*/
+    }
 }
 
 void Partie::jeu(){
