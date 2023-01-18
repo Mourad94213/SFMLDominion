@@ -298,7 +298,7 @@ void Partie::initText()
     this->Humainselectiontext->setCharacterSize(40);
     this->Humainselectiontext->setOutlineThickness(2);
     this->Humainselectiontext->setOutlineColor(sf::Color::Black);
-    this->Humainselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Humainselectiontext->setFillColor(sf::Color(255,95,31));
     this->Humainselectiontext->setPosition(sf::Vector2f(350,190));
 
     this->Iaselectiontext = new sf::Text();
@@ -307,7 +307,7 @@ void Partie::initText()
     this->Iaselectiontext->setCharacterSize(40);
     this->Iaselectiontext->setOutlineThickness(2);
     this->Iaselectiontext->setOutlineColor(sf::Color::Black);
-    this->Iaselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Iaselectiontext->setFillColor(sf::Color(255,95,31));
     this->Iaselectiontext->setPosition(sf::Vector2f(440,445));
 
     this->chiffre1 = new sf::Text();
@@ -390,7 +390,7 @@ void Partie::initText()
     this->selectioncarte->setCharacterSize(40);
     this->selectioncarte->setOutlineThickness(2);
     this->selectioncarte->setOutlineColor(sf::Color::Black);
-    this->selectioncarte->setFillColor(sf::Color(252,238,170));
+    this->selectioncarte->setFillColor(sf::Color(255,95,31));
     this->selectioncarte->setPosition(sf::Vector2f(280,695));
 
     this->selectioncarte10 = new sf::Text();
@@ -456,7 +456,7 @@ void Partie::run()
         this->pollEvents();
         this->menu();
         this->choixselection();
-        //this->jeu();
+        this->jeu();
         this->regle();
         //this->render();
     }
@@ -506,18 +506,33 @@ void Partie::choixselection(){
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                 if(this->boutonselection1h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     nbjoueurhumain=1;
+                    chiffre1->setFillColor(sf::Color(9,106,9));
+                    chiffre2->setFillColor(sf::Color(252,238,170));
+                    chiffre3->setFillColor(sf::Color(252,238,170));
+                    chiffre4->setFillColor(sf::Color(252,238,170));
                 }
                 if(this->boutonselection2h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     nbjoueurhumain=2;
-
+                    chiffre2->setFillColor(sf::Color(9,106,9));
+                    chiffre1->setFillColor(sf::Color(252,238,170));
+                    chiffre3->setFillColor(sf::Color(252,238,170));
+                    chiffre4->setFillColor(sf::Color(252,238,170));
                 }
                 if(this->boutonselection3h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
-                    nbjoueurhumain=3;   
+                    nbjoueurhumain=3;  
+                    chiffre3->setFillColor(sf::Color(9,106,9)); 
+                    chiffre1->setFillColor(sf::Color(252,238,170));
+                    chiffre2->setFillColor(sf::Color(252,238,170));
+                    chiffre4->setFillColor(sf::Color(252,238,170));
                 }
                 if(this->boutonselection4h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
-                    nbjoueurhumain=4;                   
+                    nbjoueurhumain=4; 
+                    chiffre4->setFillColor(sf::Color(9,106,9)); 
+                    chiffre1->setFillColor(sf::Color(252,238,170));
+                    chiffre2->setFillColor(sf::Color(252,238,170));
+                    chiffre3->setFillColor(sf::Color(252,238,170));                 
                 }
-                if(this->boutonselectioncartes10->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                if(this->boutonselectioncartesrng->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     cartechoisijoueur.push_back(Cave);
                     cartechoisijoueur.push_back(Renovation);
                     cartechoisijoueur.push_back(mine);
@@ -543,92 +558,57 @@ void Partie::choixselection(){
                     cartechoisijoueur.push_back(Aventurier);
                     cartechoisijoueur.push_back(Bucheron);
                     cartechoisijoueur.push_back(Espion);
-
                     std::shuffle(std::begin(cartechoisijoueur), std::end(cartechoisijoueur), std::random_device());
                     for(int i=0; i<10; i++){
                         Partie::AllCarte.push_back(std::pair<Cartes*,int>(cartechoisijoueur.at(i), 10));
                     }
                     for(int i=10; i<cartechoisijoueur.size(); i++){
-                        delete cartechoisijoueur.at(i);
+                        cartechoisijoueur.at(i)->~Cartes();
                     }
+                    /*for(int i=0; i<Partie::AllCarte.size(); i++){
+                        std::cout<<Partie::AllCarte.at(i).first->nom << " ";
+                    }*/
                     selectionbool=false;
                     menubool=false;
                     jeubool=true;
                     reglebool=false;
-                    for(int i=0; i<Partie::AllCarte.size(); i++){
-                        std::cout<<Partie::AllCarte.at(i).first->nom << " ";
-                    }
+                }
+                if(this->boutonselectioncartes10->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Forgeron, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Cave, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Chapelle, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Renovation, 10));  
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(village, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Bucheron, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(atelier, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Sorciere, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Marche, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(mine, 10));
+
+                    PreteurSurGage->~Moneylender();
+                    Douves->~Moat();
+                    Jardins->~Gardens();
+                    SalleDuConseil->~CouncilRoom();
+                    SalleDuTrone->~ThroneRoom();
+                    Milice->~Militia();
+                    Bureaucrate->~Bureaucrat();
+                    festival->~Festival();
+                    Bibliotheque->~Library();
+                    Voleur->~Thief();
+                    Chancelier->~Chancellor();
+                    Festin->~Feast();
+                    Aventurier->~Adventurer();
+                    Espion->~Spy();
+                    Laboratoire->~Laboratory();
+
+
+                    selectionbool=false;
+                    menubool=false;
+                    jeubool=true;
+                    reglebool=false;
                 }
             }
-        }
-    
-
-    /*
-
-        cartechoisijoueur.push_back(Cave);
-        cartechoisijoueur.push_back(Renovation);
-        cartechoisijoueur.push_back(mine);
-        cartechoisijoueur.push_back(PreteurSurGage);
-        cartechoisijoueur.push_back(Sorciere);
-        cartechoisijoueur.push_back(Douves);
-        cartechoisijoueur.push_back(Marche);
-        cartechoisijoueur.push_back(Jardins);
-        cartechoisijoueur.push_back(festival);
-        cartechoisijoueur.push_back(SalleDuConseil);
-        cartechoisijoueur.push_back(SalleDuTrone);
-        cartechoisijoueur.push_back(Forgeron);
-        cartechoisijoueur.push_back(Laboratoire);
-        cartechoisijoueur.push_back(village);
-        cartechoisijoueur.push_back(Milice);
-        cartechoisijoueur.push_back(Bureaucrate);
-        cartechoisijoueur.push_back(Bibliotheque);
-        cartechoisijoueur.push_back(atelier);
-        cartechoisijoueur.push_back(Chapelle);
-        cartechoisijoueur.push_back(Voleur);
-        cartechoisijoueur.push_back(Festin);
-        cartechoisijoueur.push_back(Chancelier);
-        cartechoisijoueur.push_back(Aventurier);
-        cartechoisijoueur.push_back(Bucheron);
-        cartechoisijoueur.push_back(Espion);
-        bool a=true; // BOUTON SHUFFLE SELECTION CARTES
-            if(a){
-                auto rd = std::random_device {}; 
-                auto rng = std::default_random_engine { rd() };
-                std::shuffle(std::begin(cartechoisijoueur), std::end(cartechoisijoueur), rng);
-                for(int i=0; i<10; i++){
-                    Partie::AllCarte.push_back(std::pair(cartechoisijoueur.at(i), 10));
-                }
-                for(int i=10; i<cartechoisijoueur.size(); i++){
-                    delete cartechoisijoueur.at(i);
-                }
-            }
-            else{
-                Partie::AllCarte.push_back(std::pair(Forgeron, 10));
-                Partie::AllCarte.push_back(std::pair(Cave, 10));
-                Partie::AllCarte.push_back(std::pair(Chapelle, 10));
-                Partie::AllCarte.push_back(std::pair(Renovation, 10));  
-                Partie::AllCarte.push_back(std::pair(village, 10)); 
-                Partie::AllCarte.push_back(std::pair(festival, 10)); 
-                Partie::AllCarte.push_back(std::pair(Laboratoire, 10)); 
-                Partie::AllCarte.push_back(std::pair(Sorciere, 10)); 
-                Partie::AllCarte.push_back(std::pair(Marche, 10)); 
-                Partie::AllCarte.push_back(std::pair(mine, 10));
-                delete PreteurSurGage;
-                delete Douves;
-                delete Jardins;
-                delete SalleDuConseil;
-                delete SalleDuTrone;
-                delete Milice;
-                delete Bureaucrate;
-                delete atelier;
-                delete Bibliotheque;
-                delete Voleur;
-                delete Chancelier;
-                delete Festin;
-                delete Aventurier;
-                delete Espion;
-                delete Bucheron;
-            }*/
+        }    
         this->window->draw(sf::Sprite(*this->backgroundtext));
         if(nbjoueurhumain==1){
             this->window->draw(*(this->boutonselection1ia));
@@ -681,7 +661,11 @@ void Partie::choixselection(){
 }
 
 void Partie::jeu(){
-
+    if(this->jeubool==true){
+        this->window->clear();
+        window->draw(sf::Sprite(*this->backgroundtext));
+        this->window->display();
+    }
 }
 
 void Partie::regle(){

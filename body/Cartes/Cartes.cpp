@@ -15,5 +15,5 @@ Cartes::Cartes(std::string nom, int cout)
 
 Cartes::~Cartes()
 {
-
+    std::cout << this->nom << " supprimé ";
 }
