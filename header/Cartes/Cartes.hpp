@@ -10,9 +10,10 @@
 class Cartes
 {
 private:
+
+public:
     std::string nom;
     int cout;
-public:
     sf::Texture *textCarte;
     sf::RectangleShape *Phycarte;
     Cartes(std::string nom, int cout);

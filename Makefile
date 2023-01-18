@@ -1,5 +1,5 @@
 CPP = g++
-SFML = -lsfml-graphics -lsfml-window -lsfml-system
+SFML = -lsfml-graphics -lsfml-window -lsfml-system -std=c++17
 INC_DIR = header/Cartes
 SRC_DIR = body/Cartes
 OBJ_DIR = object

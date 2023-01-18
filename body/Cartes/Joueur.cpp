@@ -17,12 +17,15 @@ int Joueur::getid(){
 
 void Joueur::acheter()
 {
+    
 }
 
 void Joueur::defausser()
 {
+
 }
 
 void Joueur::jouer_carte()
 {
+
 }

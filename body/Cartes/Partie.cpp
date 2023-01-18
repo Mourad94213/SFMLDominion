@@ -2,10 +2,32 @@
 
 std::vector<std::pair<Cartes*, int>> Partie::AllCarte;
 int nbjoueurhumain=0;
-bool aclique0=false;
-bool aclique1=false;
-bool aclique2=false;
-bool aclique3=false;
+std::vector<Cartes*> cartechoisijoueur;
+Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
+Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
+Mine        *mine           = new Mine("Mine", 5, 0, 0, 0, 0);
+Moneylender *PreteurSurGage = new Moneylender("Moneylender", 4, 0, 0, 0, 0);
+Witch       *Sorciere       = new Witch("Witch", 5, 0, 0, 2, 0);
+Moat        *Douves         = new Moat("Moat", 2, 0, 0, 2, 0);
+Market      *Marche         = new Market("Market", 5, 1, 1, 1, 1);
+Gardens     *Jardins        = new Gardens("Gardens", 4, 0, 0, 0, 0);
+Festival    *festival       = new Festival("Festival", 5, 2, 1, 0, 2);
+CouncilRoom *SalleDuConseil = new CouncilRoom("CouncilRoom", 5, 0, 1, 4, 0);
+ThroneRoom  *SalleDuTrone   = new ThroneRoom("ThroneRoom", 4, 0, 0, 0, 0);
+Smithy      *Forgeron       = new Smithy("Smithy", 4, 0, 0, 3, 0);
+Laboratory  *Laboratoire    = new Laboratory("Laboratory", 5, 0, 0, 2, 1);
+Village     *village        = new Village("Village", 3, 0, 0, 1, 2);
+Militia     *Milice         = new Militia("Militia", 4, 2, 0, 0, 0);
+Bureaucrat  *Bureaucrate    = new Bureaucrat("Bureaucrat", 4, 0, 0, 0, 0);
+Library     *Bibliotheque   = new Library("Library", 5, 0, 0, 0, 0);
+Workshop    *atelier        = new Workshop("Workshop", 3, 0, 0, 0, 0);
+Chapel      *Chapelle       = new Chapel("Chapel", 2, 0, 0, 0, 0);
+Thief       *Voleur         = new Thief("Thief", 4, 0, 0, 0, 0);
+Feast       *Festin         = new Feast("Feast", 4, 0, 0, 0, 0);
+Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
+Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
+Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
+Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);
 
 void Partie::initVariables()
 {
@@ -36,10 +58,13 @@ void Partie::initVariables()
 
 void Partie::initWindow()
 {
+    
     this->videoMode.height = 1000;
 	this->videoMode.width = 1900;
 	this->window = new sf::RenderWindow(this->videoMode, "Dominion", sf::Style::Titlebar | sf::Style::Close);
+    this->window->setPosition(sf::Vector2i(0,0));
 	this->window->setFramerateLimit(60);
+    std::cout << sf::VideoMode::getDesktopMode().height << sf::VideoMode::getDesktopMode().width << std::endl;
 }
 
 void Partie::initFonts(){
@@ -471,107 +496,74 @@ void Partie::menu(){
             this->window->draw(*(this->Lbutton));
             this->window->draw(*(this->Ltext));
             this->window->display();
-            /*delete backgroundtext;
-            delete buttontext;
-            delete boutonDominiontexture;
-            delete Rbuttontexture;*/
     }
 }
 
 void Partie::choixselection(){
     if(this->selectionbool==true){
         this->window->clear();
-        if(!aclique0 || !aclique1 || !aclique2 || !aclique3) this->window->draw(sf::Sprite(*this->backgroundtext));  
-        if(this->ev.type==sf::Event::MouseButtonPressed || aclique0 || aclique1 || aclique2 || aclique3){
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left) || aclique0 || aclique1 || aclique2 || aclique3){
-                if((this->boutonselection1h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool) || aclique0 && !aclique1 && !aclique2 && !aclique3){
+        if(this->ev.type==sf::Event::MouseButtonPressed){
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                if(this->boutonselection1h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     nbjoueurhumain=1;
-                    aclique0=true;
-                    aclique1=false;
-                    aclique2=false;
-                    aclique3=false;
-                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
-                    this->window->draw(*(this->boutonselection1ia));
-                    this->window->draw(*(this->chiffre0ia));
-                    this->window->draw(*(this->boutonselection2ia));
-                    this->window->draw(*(this->chiffre1ia));
-                    this->window->draw(*(this->boutonselection3ia));
-                    this->window->draw(*(this->chiffre2ia));
-                    this->window->draw(*(this->boutonselection4ia));
-                    this->window->draw(*(this->chiffre3ia));
-                    
                 }
-                if(this->boutonselection2h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || aclique1 && !aclique0 && !aclique2 && !aclique3){
+                if(this->boutonselection2h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     nbjoueurhumain=2;
-                    aclique0=false;
-                    aclique1=true;
-                    aclique2=false;
-                    aclique3=false;
-                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
-                    this->window->draw(*(this->boutonselection1ia));
-                    this->window->draw(*(this->chiffre0ia));
-                    this->window->draw(*(this->boutonselection2ia));
-                    this->window->draw(*(this->chiffre1ia));
-                    this->window->draw(*(this->boutonselection3ia));
-                    this->window->draw(*(this->chiffre2ia));
 
                 }
-                if(this->boutonselection3h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || !aclique0 && !aclique1 && aclique2 && !aclique3){
-                    nbjoueurhumain=3;
-                    aclique0=false;
-                    aclique1=false;
-                    aclique2=true;
-                    aclique3=false;
-                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
-                    this->window->draw(*(this->boutonselection1ia));
-                    this->window->draw(*(this->chiffre0ia));
-                    this->window->draw(*(this->boutonselection2ia));
-                    this->window->draw(*(this->chiffre1ia));
-                    
+                if(this->boutonselection3h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    nbjoueurhumain=3;   
                 }
-                if(this->boutonselection4h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool || !aclique0 && !aclique1 && !aclique2 && aclique3){
-                    nbjoueurhumain=4;
-                    aclique0=false;
-                    aclique1=false;
-                    aclique2=false;
-                    aclique3=true;
-                    this->window->draw(sf::Sprite(*this->backgroundtext)); 
-                    this->window->draw(*(this->boutonselection1ia));
-                    this->window->draw(*(this->chiffre0ia));
-                    
+                if(this->boutonselection4h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    nbjoueurhumain=4;                   
                 }
-                // EVENT SEPARE PR CARTES
+                if(this->boutonselectioncartes10->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    cartechoisijoueur.push_back(Cave);
+                    cartechoisijoueur.push_back(Renovation);
+                    cartechoisijoueur.push_back(mine);
+                    cartechoisijoueur.push_back(PreteurSurGage);
+                    cartechoisijoueur.push_back(Sorciere);
+                    cartechoisijoueur.push_back(Douves);
+                    cartechoisijoueur.push_back(Marche);
+                    cartechoisijoueur.push_back(Jardins);
+                    cartechoisijoueur.push_back(festival);
+                    cartechoisijoueur.push_back(SalleDuConseil);
+                    cartechoisijoueur.push_back(SalleDuTrone);
+                    cartechoisijoueur.push_back(Forgeron);
+                    cartechoisijoueur.push_back(Laboratoire);
+                    cartechoisijoueur.push_back(village);
+                    cartechoisijoueur.push_back(Milice);
+                    cartechoisijoueur.push_back(Bureaucrate);
+                    cartechoisijoueur.push_back(Bibliotheque);
+                    cartechoisijoueur.push_back(atelier);
+                    cartechoisijoueur.push_back(Chapelle);
+                    cartechoisijoueur.push_back(Voleur);
+                    cartechoisijoueur.push_back(Festin);
+                    cartechoisijoueur.push_back(Chancelier);
+                    cartechoisijoueur.push_back(Aventurier);
+                    cartechoisijoueur.push_back(Bucheron);
+                    cartechoisijoueur.push_back(Espion);
+
+                    std::shuffle(std::begin(cartechoisijoueur), std::end(cartechoisijoueur), std::random_device());
+                    for(int i=0; i<10; i++){
+                        Partie::AllCarte.push_back(std::pair<Cartes*,int>(cartechoisijoueur.at(i), 10));
+                    }
+                    for(int i=10; i<cartechoisijoueur.size(); i++){
+                        delete cartechoisijoueur.at(i);
+                    }
+                    selectionbool=false;
+                    menubool=false;
+                    jeubool=true;
+                    reglebool=false;
+                    for(int i=0; i<Partie::AllCarte.size(); i++){
+                        std::cout<<Partie::AllCarte.at(i).first->nom << " ";
+                    }
                 }
             }
         }
+    
 
-        /*Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
-        Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
-        Mine        *mine           = new Mine("Mine", 5, 0, 0, 0, 0);
-        Moneylender *PreteurSurGage = new Moneylender("Moneylender", 4, 0, 0, 0, 0);
-        Witch       *Sorciere       = new Witch("Witch", 5, 0, 0, 2, 0);
-        Moat        *Douves         = new Moat("Moat", 2, 0, 0, 2, 0);
-        Market      *Marche         = new Market("Market", 5, 1, 1, 1, 1);
-        Gardens     *Jardins        = new Gardens("Gardens", 4, 0, 0, 0, 0);
-        Festival    *festival       = new Festival("Festival", 5, 2, 1, 0, 2);
-        CouncilRoom *SalleDuConseil = new CouncilRoom("CouncilRoom", 5, 0, 1, 4, 0);
-        ThroneRoom  *SalleDuTrone   = new ThroneRoom("ThroneRoom", 4, 0, 0, 0, 0);
-        Smithy      *Forgeron       = new Smithy("Smithy", 4, 0, 0, 3, 0);
-        Laboratory  *Laboratoire    = new Laboratory("Laboratory", 5, 0, 0, 2, 1);
-        Village     *village        = new Village("Village", 3, 0, 0, 1, 2);
-        Militia     *Milice         = new Militia("Militia", 4, 2, 0, 0, 0);
-        /*Bureaucrat  *Bureaucrate    = new Bureaucrat("Bureaucrat", 4, 0, 0, 0, 0);
-        Library     *Bibliotheque   = new Library("Library", 5, 0, 0, 0, 0);
-        Workshop    *atelier        = new Workshop("Workshop", 3, 0, 0, 0, 0);
-        Chapel      *Chapelle       = new Chapel("Chapel", 2, 0, 0, 0, 0);
-        Thief       *Voleur         = new Thief("Thief", 4, 0, 0, 0, 0);
-        Feast       *Festin         = new Feast("Feast", 4, 0, 0, 0, 0);
-        Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
-        Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
-        Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
-        Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);*/
     /*
-        std::vector<Cartes*> cartechoisijoueur;
 
         cartechoisijoueur.push_back(Cave);
         cartechoisijoueur.push_back(Renovation);
@@ -637,7 +629,35 @@ void Partie::choixselection(){
                 delete Espion;
                 delete Bucheron;
             }*/
-        std::cout<<nbjoueurhumain;
+        this->window->draw(sf::Sprite(*this->backgroundtext));
+        if(nbjoueurhumain==1){
+            this->window->draw(*(this->boutonselection1ia));
+            this->window->draw(*(this->chiffre0ia));
+            this->window->draw(*(this->boutonselection2ia));
+            this->window->draw(*(this->chiffre1ia));
+            this->window->draw(*(this->boutonselection3ia));
+            this->window->draw(*(this->chiffre2ia));
+            this->window->draw(*(this->boutonselection4ia));
+            this->window->draw(*(this->chiffre3ia));
+        }
+        else if(nbjoueurhumain==2){
+            this->window->draw(*(this->boutonselection1ia));
+            this->window->draw(*(this->chiffre0ia));
+            this->window->draw(*(this->boutonselection2ia));
+            this->window->draw(*(this->chiffre1ia));
+            this->window->draw(*(this->boutonselection3ia));
+            this->window->draw(*(this->chiffre2ia));
+        }
+        else if(nbjoueurhumain==3){
+            this->window->draw(*(this->boutonselection1ia));
+            this->window->draw(*(this->chiffre0ia));
+            this->window->draw(*(this->boutonselection2ia));
+            this->window->draw(*(this->chiffre1ia));
+        }
+        else if(nbjoueurhumain==4){
+            this->window->draw(*(this->boutonselection1ia));
+            this->window->draw(*(this->chiffre0ia));
+        }
         this->window->draw(*(this->boutonselectionhumain));
         this->window->draw(*(this->boutonselectionia));
         this->window->draw(*(this->Humainselectiontext));
@@ -657,8 +677,6 @@ void Partie::choixselection(){
         this->window->draw(*(this->selectioncarte10));
         this->window->draw(*(this->selectioncarterng));
         this->window->display();
-        /*delete bouton_selection;
-        delete bouton_selection_chiffre;*/
     }
 }
 
@@ -675,8 +693,6 @@ void Partie::regle(){
         window->draw(*(this->regletop));
         window->draw(*(this->regletext));
         this->window->display();
-        /*delete panneauRegletexture;
-        delete panneauRegletoptexture;*/
     }
 }
 

@@ -11,6 +11,9 @@ private:
     static int id;
     std::vector<Cartes*> Deck;
     std::vector<Cartes*> Main;
+    int action;
+    int achat;
+    
 public:
     Joueur();
     ~Joueur();
