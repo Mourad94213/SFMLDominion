@@ -2,6 +2,7 @@
 
 std::vector<std::pair<Cartes*, int>> Partie::AllCarte;
 int nbjoueurhumain=0;
+bool hover = false;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -510,6 +511,31 @@ void Partie::choixselection(){
                     chiffre2->setFillColor(sf::Color(252,238,170));
                     chiffre3->setFillColor(sf::Color(252,238,170));
                     chiffre4->setFillColor(sf::Color(252,238,170));
+                    if(this->boutonselection1ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                        //IA *ia1 = new IA();
+                        chiffre0ia->setFillColor(sf::Color(9,106,9));
+                        chiffre2ia->setFillColor(sf::Color(252,238,170));
+                        chiffre3ia->setFillColor(sf::Color(252,238,170));
+                        chiffre1ia->setFillColor(sf::Color(252,238,170));
+                    }
+                    if(this->boutonselection2ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                        chiffre1ia->setFillColor(sf::Color(9,106,9));
+                        chiffre0ia->setFillColor(sf::Color(252,238,170));
+                        chiffre3ia->setFillColor(sf::Color(252,238,170));
+                        chiffre2ia->setFillColor(sf::Color(252,238,170));
+                    }
+                    if(this->boutonselection3ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                        chiffre2ia->setFillColor(sf::Color(9,106,9)); 
+                        chiffre1ia->setFillColor(sf::Color(252,238,170));
+                        chiffre3ia->setFillColor(sf::Color(252,238,170));
+                        chiffre0ia->setFillColor(sf::Color(252,238,170));
+                    }
+                    if(this->boutonselection4ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                        chiffre3ia->setFillColor(sf::Color(9,106,9)); 
+                        chiffre1ia->setFillColor(sf::Color(252,238,170));
+                        chiffre2ia->setFillColor(sf::Color(252,238,170));
+                        chiffre0ia->setFillColor(sf::Color(252,238,170));                 
+                    }
                 }
                 if(this->boutonselection2h->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     nbjoueurhumain=2;
@@ -530,7 +556,31 @@ void Partie::choixselection(){
                     chiffre4->setFillColor(sf::Color(9,106,9)); 
                     chiffre1->setFillColor(sf::Color(252,238,170));
                     chiffre2->setFillColor(sf::Color(252,238,170));
-                    chiffre3->setFillColor(sf::Color(252,238,170));                 
+                    chiffre3->setFillColor(sf::Color(252,238,170));       
+                }
+                if(this->boutonselection1ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    chiffre0ia->setFillColor(sf::Color(9,106,9));
+                    chiffre2ia->setFillColor(sf::Color(252,238,170));
+                    chiffre3ia->setFillColor(sf::Color(252,238,170));
+                    chiffre1ia->setFillColor(sf::Color(252,238,170));
+                }
+                if(this->boutonselection2ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    chiffre1ia->setFillColor(sf::Color(9,106,9));
+                    chiffre0ia->setFillColor(sf::Color(252,238,170));
+                    chiffre3ia->setFillColor(sf::Color(252,238,170));
+                    chiffre2ia->setFillColor(sf::Color(252,238,170));
+                }
+                if(this->boutonselection3ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    chiffre2ia->setFillColor(sf::Color(9,106,9)); 
+                    chiffre1ia->setFillColor(sf::Color(252,238,170));
+                    chiffre3ia->setFillColor(sf::Color(252,238,170));
+                    chiffre0ia->setFillColor(sf::Color(252,238,170));
+                }
+                if(this->boutonselection4ia->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
+                    chiffre3ia->setFillColor(sf::Color(9,106,9)); 
+                    chiffre1ia->setFillColor(sf::Color(252,238,170));
+                    chiffre2ia->setFillColor(sf::Color(252,238,170));
+                    chiffre0ia->setFillColor(sf::Color(252,238,170));                 
                 }
                 if(this->boutonselectioncartesrng->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     cartechoisijoueur.push_back(Cave);
@@ -660,10 +710,100 @@ void Partie::choixselection(){
     }
 }
 
+void Partie::setupcard(){
+    for(int i=0; i<Partie::AllCarte.size(); i++){
+        Partie::AllCarte.at(i).first->Phycarte->setScale(sf::Vector2f(0.6,0.6));
+    }
+    Partie::AllCarte.at(0).first->Phycarte->setPosition(sf::Vector2f(100,100));
+    Partie::AllCarte.at(1).first->Phycarte->setPosition(sf::Vector2f(100,330));
+    Partie::AllCarte.at(2).first->Phycarte->setPosition(sf::Vector2f(100,560));
+    Partie::AllCarte.at(6).first->Phycarte->setPosition(sf::Vector2f(100,790));
+    Partie::AllCarte.at(3).first->Phycarte->setPosition(sf::Vector2f(300,100));
+    Partie::AllCarte.at(4).first->Phycarte->setPosition(sf::Vector2f(300,330));
+    Partie::AllCarte.at(5).first->Phycarte->setPosition(sf::Vector2f(300,560));
+    int incr = 150;
+    for(int i=7; i<Partie::AllCarte.size(); i++){
+        if(i<=11){
+            Partie::AllCarte.at(i).first->Phycarte->setPosition(sf::Vector2f(400+incr,100));
+            incr+=150;
+            if(i==11) incr=150;
+        }
+        else{
+            Partie::AllCarte.at(i).first->Phycarte->setPosition(sf::Vector2f(400+incr,330));
+            incr+=150;
+        }    
+    }
+
+    for(int i=0; i<Partie::AllCarte.size(); i++){
+        Partie::AllCarte.at(i).first->Phycarte->setOrigin(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().height/2, Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().width/2);
+    }
+
+    this->chiffre0ia->setString(std::to_string(Partie::AllCarte.at(0).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(1).second) + "\n\n\n\n" +
+    std::to_string(Partie::AllCarte.at(2).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(6).second));
+    this->chiffre0ia->setCharacterSize(40);
+    this->chiffre0ia->setOutlineThickness(1);
+    this->chiffre0ia->setOutlineColor(sf::Color::Black);
+    this->chiffre0ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre0ia->setPosition(sf::Vector2f(170,225));
+
+    this->chiffre1ia->setString(std::to_string(Partie::AllCarte.at(3).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(4).second) + "\n\n\n\n" +
+    std::to_string(Partie::AllCarte.at(5).second));
+    this->chiffre1ia->setCharacterSize(40);
+    this->chiffre1ia->setOutlineThickness(1);
+    this->chiffre1ia->setOutlineColor(sf::Color::Black);
+    this->chiffre1ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre1ia->setPosition(sf::Vector2f(370,225));
+}
+
 void Partie::jeu(){
     if(this->jeubool==true){
         this->window->clear();
+        setupcard();
+        switch (nbjoueurhumain)
+        {
+        /*case 1:
+            Humain *h1 = new Humain();
+            break;
+        case 2:
+            Humain *h1 = new Humain();
+            Humain *h2 = new Humain();
+            break;
+        case 3:
+            Humain *h1 = new Humain();
+            Humain *h2 = new Humain();
+            Humain *h3 = new Humain();
+            break;
+        case 4:
+            Humain *h1 = new Humain();
+            Humain *h2 = new Humain();
+            Humain *h3 = new Humain();
+            Humain *h4 = new Humain();
+            break;
+        default:
+            Humain *h1 = new Humain();
+            break;*/
+        }
+
+        if(ev.type == sf::Event::MouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            for(int i=0; i<Partie::AllCarte.size(); i++){   
+                if(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                    Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+                }
+            }
+        }
+        
+        for(int i=0; i<Partie::AllCarte.size(); i++){
+            if(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
+            {
+                Partie::AllCarte.at(i).first->Phycarte->setScale(sf::Vector2f(0.75,0.75));
+            }
+        }
         window->draw(sf::Sprite(*this->backgroundtext));
+        for(int i=Partie::AllCarte.size()-1; i>=0; i--){
+            window->draw(*this->AllCarte.at(i).first->Phycarte);
+        }
+        window->draw(*this->chiffre0ia);
+        window->draw(*this->chiffre1ia);
         this->window->display();
     }
 }
@@ -678,15 +818,4 @@ void Partie::regle(){
         window->draw(*(this->regletext));
         this->window->display();
     }
-}
-
-void Partie::render(){
-   /* this->window->clear();
-    int incr=0;
-        for(int i=0; i<AllCarte.size(); i++){
-            this->window->draw(*(Partie::AllCarte.at(i).first->Phycarte));
-            AllCarte.at(i).first->Phycarte->setPosition(incr,0);
-            incr+=100;
-        }
-    this->window->display();*/
 }

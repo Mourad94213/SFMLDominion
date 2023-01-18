@@ -109,7 +109,7 @@ public:
     ~Partie();
     void pollEvents();
     void run();
-    void render();
+    void setupcard();
     void menu();
     void choixselection();
     void jeu();
