@@ -9,18 +9,21 @@ class Joueur
 {
 private:
     static int id;
-    std::vector<Cartes*> Deck;
-    std::vector<Cartes*> Main;
+    
     int action;
     int achat;
     
 public:
+    std::vector<Cartes*> Deck;
+    std::vector<Cartes*> Main;
+    std::vector<Cartes*> Defausse;
     Joueur();
     ~Joueur();
     static int getid();
     virtual void acheter();
-    virtual void defausser();
+    virtual void defausser(Cartes *c);
     virtual void jouer_carte();
+    virtual void piocher();
 };
 
 

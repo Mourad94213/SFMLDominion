@@ -1,8 +1,16 @@
 #include "../../header/Cartes/Adventurer.hpp"
 
 
-void Adventurer::appliquer_effet()
+void Adventurer::appliquer_effet(Joueur *j)
 {
+    int compte=0;
+    while(compte<2){
+        j->piocher();
+        if(j->Main.at(j->Main.size()-1)->nom == "Cuivre" || j->Main.at(j->Main.size()-1)->nom == "Argent" || j->Main.at(j->Main.size()-1)->nom == "Or"){
+            compte++;
+            j->defausser(j->Main.at(j->Main.size()-1));
+        }
+    }
 }
 
 

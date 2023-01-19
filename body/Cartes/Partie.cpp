@@ -3,6 +3,7 @@
 std::vector<std::pair<Cartes*, int>> Partie::AllCarte;
 int nbjoueurhumain=0;
 bool hover = false;
+bool button_pressed=false;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -29,16 +30,17 @@ Chancellor  *Chancelier     = new Chancellor("Chancellor", 3, 2, 0, 0, 0);
 Adventurer  *Aventurier     = new Adventurer("Adventurer", 6, 0, 0, 0, 0);
 Woodcutter  *Bucheron       = new Woodcutter("Woodcutter", 3, 2, 1, 0, 0);
 Spy         *Espion         = new Spy("Spy", 4, 0, 0, 1, 1);
+Tresor *cuivre = new Tresor("Cuivre",0,1);
+Tresor *argent = new Tresor("Argent",3,2);
+Tresor *Or = new Tresor("Or",6,3);
+Victoire *Domaine = new Victoire("Domaine",2,1);
+Victoire *Duche = new Victoire("Duche",5,3);
+Victoire *Province = new Victoire("Province",8,6);
+Victoire *Malediction = new Victoire("Malediction",0,-1);
 
 void Partie::initVariables()
 {
-    Tresor *cuivre = new Tresor("Cuivre",0,1);
-    Tresor *argent = new Tresor("Argent",3,2);
-    Tresor *Or = new Tresor("Or",6,3);
-    Victoire *Domaine = new Victoire("Domaine",2,1);
-    Victoire *Duche = new Victoire("Duche",5,3);
-    Victoire *Province = new Victoire("Province",8,6);
-    Victoire *Malediction = new Victoire("Malediction",0,-1);
+
 
 	Partie::AllCarte.push_back(std::pair<Tresor*,int>(cuivre,60));
     Partie::AllCarte.push_back(std::pair<Tresor*,int>(argent,40));
@@ -738,30 +740,143 @@ void Partie::setupcard(){
         Partie::AllCarte.at(i).first->Phycarte->setOrigin(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().height/2, Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().width/2);
     }
 
-    this->chiffre0ia->setString(std::to_string(Partie::AllCarte.at(0).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(1).second) + "\n\n\n\n" +
-    std::to_string(Partie::AllCarte.at(2).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(6).second));
+    this->chiffre0ia->setString(std::to_string(Partie::AllCarte.at(0).second));
     this->chiffre0ia->setCharacterSize(40);
     this->chiffre0ia->setOutlineThickness(1);
     this->chiffre0ia->setOutlineColor(sf::Color::Black);
     this->chiffre0ia->setFillColor(sf::Color(252,238,170));
     this->chiffre0ia->setPosition(sf::Vector2f(170,225));
 
-    this->chiffre1ia->setString(std::to_string(Partie::AllCarte.at(3).second) + "\n\n\n\n\n" + std::to_string(Partie::AllCarte.at(4).second) + "\n\n\n\n" +
-    std::to_string(Partie::AllCarte.at(5).second));
+    this->regletext->setString(std::to_string(Partie::AllCarte.at(1).second));
+    this->regletext->setCharacterSize(40);
+    this->regletext->setOutlineThickness(1);
+    this->regletext->setOutlineColor(sf::Color::Black);
+    this->regletext->setFillColor(sf::Color(252,238,170));
+    this->regletext->setPosition(sf::Vector2f(170,455));
+
+    this->regletop->setString(std::to_string(Partie::AllCarte.at(2).second));
+    this->regletop->setCharacterSize(40);
+    this->regletop->setOutlineThickness(1);
+    this->regletop->setOutlineColor(sf::Color::Black);
+    this->regletop->setFillColor(sf::Color(252,238,170));
+    this->regletop->setPosition(sf::Vector2f(170,685));
+
+    this->text->setString(std::to_string(Partie::AllCarte.at(6).second));
+    this->text->setCharacterSize(40);
+    this->text->setOutlineThickness(1);
+    this->text->setOutlineColor(sf::Color::Black);
+    this->text->setFillColor(sf::Color(252,238,170));
+    this->text->setPosition(sf::Vector2f(170,915));
+
+    this->chiffre1ia->setString(std::to_string(Partie::AllCarte.at(3).second));
     this->chiffre1ia->setCharacterSize(40);
     this->chiffre1ia->setOutlineThickness(1);
     this->chiffre1ia->setOutlineColor(sf::Color::Black);
     this->chiffre1ia->setFillColor(sf::Color(252,238,170));
     this->chiffre1ia->setPosition(sf::Vector2f(370,225));
+
+    this->Playtext->setString(std::to_string(Partie::AllCarte.at(4).second));
+    this->Playtext->setCharacterSize(40);
+    this->Playtext->setOutlineThickness(1);
+    this->Playtext->setOutlineColor(sf::Color::Black);
+    this->Playtext->setFillColor(sf::Color(252,238,170));
+    this->Playtext->setPosition(sf::Vector2f(370,455));
+
+    this->Rtext->setString(std::to_string(Partie::AllCarte.at(5).second));
+    this->Rtext->setCharacterSize(40);
+    this->Rtext->setOutlineThickness(1);
+    this->Rtext->setOutlineColor(sf::Color::Black);
+    this->Rtext->setFillColor(sf::Color(252,238,170));
+    this->Rtext->setPosition(sf::Vector2f(370,685));
+
+    this->chiffre2ia->setString(std::to_string(Partie::AllCarte.at(7).second));
+    this->chiffre2ia->setCharacterSize(40);
+    this->chiffre2ia->setOutlineThickness(1);
+    this->chiffre2ia->setOutlineColor(sf::Color::Black);
+    this->chiffre2ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre2ia->setPosition(sf::Vector2f(545,15));
+
+    this->chiffre3ia->setString(std::to_string(Partie::AllCarte.at(8).second));
+    this->chiffre3ia->setCharacterSize(40);
+    this->chiffre3ia->setOutlineThickness(1);
+    this->chiffre3ia->setOutlineColor(sf::Color::Black);
+    this->chiffre3ia->setFillColor(sf::Color(252,238,170));
+    this->chiffre3ia->setPosition(sf::Vector2f(695,15));
+
+    this->chiffre1->setString(std::to_string(Partie::AllCarte.at(9).second));
+    this->chiffre1->setCharacterSize(40);
+    this->chiffre1->setOutlineThickness(1);
+    this->chiffre1->setOutlineColor(sf::Color::Black);
+    this->chiffre1->setFillColor(sf::Color(252,238,170));
+    this->chiffre1->setPosition(sf::Vector2f(845,15));
+
+    this->chiffre2->setString(std::to_string(Partie::AllCarte.at(10).second));
+    this->chiffre2->setCharacterSize(40);
+    this->chiffre2->setOutlineThickness(1);
+    this->chiffre2->setOutlineColor(sf::Color::Black);
+    this->chiffre2->setFillColor(sf::Color(252,238,170));
+    this->chiffre2->setPosition(sf::Vector2f(995,15));
+
+    this->chiffre3->setString(std::to_string(Partie::AllCarte.at(11).second));
+    this->chiffre3->setCharacterSize(40);
+    this->chiffre3->setOutlineThickness(1);
+    this->chiffre3->setOutlineColor(sf::Color::Black);
+    this->chiffre3->setFillColor(sf::Color(252,238,170));
+    this->chiffre3->setPosition(sf::Vector2f(1145,15));
+
+    this->Humainselectiontext->setString(std::to_string(Partie::AllCarte.at(12).second));
+    this->Humainselectiontext->setCharacterSize(40);
+    this->Humainselectiontext->setOutlineThickness(1);
+    this->Humainselectiontext->setOutlineColor(sf::Color::Black);
+    this->Humainselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Humainselectiontext->setPosition(sf::Vector2f(545,490));
+
+    this->Iaselectiontext->setString(std::to_string(Partie::AllCarte.at(13).second));
+    this->Iaselectiontext->setCharacterSize(40);
+    this->Iaselectiontext->setOutlineThickness(1);
+    this->Iaselectiontext->setOutlineColor(sf::Color::Black);
+    this->Iaselectiontext->setFillColor(sf::Color(252,238,170));
+    this->Iaselectiontext->setPosition(sf::Vector2f(695,490));
+
+    this->selectioncarte10->setString(std::to_string(Partie::AllCarte.at(14).second));
+    this->selectioncarte10->setCharacterSize(40);
+    this->selectioncarte10->setOutlineThickness(1);
+    this->selectioncarte10->setOutlineColor(sf::Color::Black);
+    this->selectioncarte10->setFillColor(sf::Color(252,238,170));
+    this->selectioncarte10->setPosition(sf::Vector2f(845,490));
+
+    this->selectioncarte->setString(std::to_string(Partie::AllCarte.at(15).second));
+    this->selectioncarte->setCharacterSize(40);
+    this->selectioncarte->setOutlineThickness(1);
+    this->selectioncarte->setOutlineColor(sf::Color::Black);
+    this->selectioncarte->setFillColor(sf::Color(252,238,170));
+    this->selectioncarte->setPosition(sf::Vector2f(995,490));
+
+    this->selectioncarterng->setString(std::to_string(Partie::AllCarte.at(16).second));
+    this->selectioncarterng->setCharacterSize(40);
+    this->selectioncarterng->setOutlineThickness(1);
+    this->selectioncarterng->setOutlineColor(sf::Color::Black);
+    this->selectioncarterng->setFillColor(sf::Color(252,238,170));
+    this->selectioncarterng->setPosition(sf::Vector2f(1145,490));
 }
 
 void Partie::jeu(){
     if(this->jeubool==true){
         this->window->clear();
         setupcard();
-        switch (nbjoueurhumain)
+        Humain *h1 = new Humain();
+        for(int i=0; i<7; i++){
+            h1->Deck.push_back(cuivre);
+            Partie::AllCarte.at(0).second--;
+        }
+        for(int i=0;i<3;i++){
+            h1->Deck.push_back(Domaine);
+            Partie::AllCarte.at(3).second--;
+        }
+        std::shuffle(std::begin(h1->Deck), std::end(h1->Deck), std::random_device());
+        /*switch (nbjoueurhumain)
         {
-        /*case 1:
+        case 1:
             Humain *h1 = new Humain();
             break;
         case 2:
@@ -781,15 +896,21 @@ void Partie::jeu(){
             break;
         default:
             Humain *h1 = new Humain();
-            break;*/
-        }
+            break;
+        }*/
 
-        if(ev.type == sf::Event::MouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-            for(int i=0; i<Partie::AllCarte.size(); i++){   
-                if(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                    Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+        if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+            for(int i=0; i<Partie::AllCarte.size(); i++){
+                if(!button_pressed){
+                    if(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                        Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+                        button_pressed=true;
+                    }
                 }
             }
+        }
+        if(ev.type == sf::Event::MouseButtonReleased){
+            button_pressed=false;
         }
         
         for(int i=0; i<Partie::AllCarte.size(); i++){
@@ -802,8 +923,23 @@ void Partie::jeu(){
         for(int i=Partie::AllCarte.size()-1; i>=0; i--){
             window->draw(*this->AllCarte.at(i).first->Phycarte);
         }
-        window->draw(*this->chiffre0ia);
-        window->draw(*this->chiffre1ia);
+            window->draw(*this->chiffre0ia);
+            window->draw(*this->chiffre1ia);
+            window->draw(*this->chiffre2ia);
+            window->draw(*this->chiffre3ia);
+            window->draw(*this->chiffre1);
+            window->draw(*this->chiffre2);
+            window->draw(*this->chiffre3);
+            window->draw(*this->regletext);
+            window->draw(*this->regletop);
+            window->draw(*this->text);
+            window->draw(*this->Playtext);
+            window->draw(*this->Rtext);
+            window->draw(*this->Humainselectiontext);
+            window->draw(*this->Iaselectiontext);
+            window->draw(*this->selectioncarte10);
+            window->draw(*this->selectioncarte);
+            window->draw(*this->selectioncarterng);
         this->window->display();
     }
 }

@@ -2,7 +2,6 @@
 
 Humain::Humain():
     Joueur(){
-
 }
 
 Humain::~Humain()

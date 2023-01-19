@@ -20,12 +20,17 @@ void Joueur::acheter()
     
 }
 
-void Joueur::defausser()
+void Joueur::defausser(Cartes *c)
 {
-
+    // 
 }
 
 void Joueur::jouer_carte()
 {
 
+}
+
+void Joueur::piocher(){
+    this->Main.push_back(this->Deck.at(0));
+    this->Deck.erase(this->Deck.begin());
 }
