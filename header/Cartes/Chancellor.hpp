@@ -7,7 +7,7 @@ class Chancellor : public Royaume
 private:
     
 public:
-    void appliquer_effet();
+    void appliquer_effet(Joueur *j);
     Chancellor(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Chancellor();
 };

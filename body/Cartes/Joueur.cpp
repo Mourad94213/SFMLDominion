@@ -22,7 +22,8 @@ void Joueur::acheter()
 
 void Joueur::defausser(Cartes *c)
 {
-    // 
+    this->Main.push_back(c);
+    this->Deck.erase(std::find(this->Deck.begin(), this->Deck.end(), c));
 }
 
 void Joueur::jouer_carte()
@@ -32,5 +33,5 @@ void Joueur::jouer_carte()
 
 void Joueur::piocher(){
     this->Main.push_back(this->Deck.at(0));
-    this->Deck.erase(this->Deck.begin());
+    this->Deck.erase(std::begin(this->Deck));
 }

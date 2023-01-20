@@ -1,9 +1,14 @@
 #include "../../header/Cartes/Workshop.hpp"
 
 
-void Workshop::appliquer_effet()
+void Workshop::appliquer_effet(Joueur *j)
 {
+    int temp = j->achat;
+    j->achat = 4;
+    j->acheter();
+    j->achat=temp;
 }
+
 Workshop::Workshop(std::string name, int price, int money, int buy, int wdraw, int acti)
     : Royaume(name, price, money, wdraw, buy, acti) 
     {

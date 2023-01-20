@@ -3,10 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include "Joueur.hpp"
-#include "Royaume.hpp"
-#include "Tresor.hpp"
-#include "Victoire.hpp"
 #include <./SFML/Graphics.hpp>
 #include <./SFML/Window.hpp>
 #include <./SFML/System.hpp>

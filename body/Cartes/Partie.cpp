@@ -3,6 +3,8 @@
 std::vector<std::pair<Cartes*, int>> Partie::AllCarte;
 int nbjoueurhumain=0;
 bool hover = false;
+int incrmain=0;
+bool jeustarted=false;
 bool button_pressed=false;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
@@ -860,20 +862,86 @@ void Partie::setupcard(){
     this->selectioncarterng->setPosition(sf::Vector2f(1145,490));
 }
 
+/*Joueur* Partie::creerjoueur(){
+    if(!jeustarted){
+        Joueur *j1= new Joueur();
+        return j1;
+    }
+
+}*/
+
+void Partie::setupplayer(Joueur *j1){
+    for(int i=0; i<7; i++){
+        j1->Deck.push_back(cuivre);
+        Partie::AllCarte.at(0).second--;
+    }
+    for(int i=0;i<3;i++){
+        j1->Deck.push_back(Domaine);
+        Partie::AllCarte.at(3).second--;
+    }
+    std::shuffle(std::begin(j1->Deck), std::end(j1->Deck), std::random_device());
+    for(int i = 0; i<j1->Deck.size(); i++){
+        std::cout << j1->Deck.at(i)->nom << std::endl;
+    }
+    std::cout << std::endl;
+    //j1->Deck.erase(std::begin(j1->Deck));
+    for(int i = 0; i<j1->Deck.size(); i++){
+        std::cout << j1->Deck.at(i)->nom << std::endl;
+    }
+    
+    for(int i=0;i<5;i++){
+        j1->piocher();
+        std::cout << "\n Deck : ";
+        for(int i = 0; i<j1->Deck.size(); i++){
+            std::cout << j1->Deck.at(i)->nom << std::endl;
+        }
+        std::cout<<j1->Main.at(i)->nom;
+    }
+}
+
+void Partie::actualisercarte(){
+    this->chiffre0ia->setString(std::to_string(Partie::AllCarte.at(0).second));
+    this->regletext->setString(std::to_string(Partie::AllCarte.at(1).second));
+    this->regletop->setString(std::to_string(Partie::AllCarte.at(2).second));
+    this->text->setString(std::to_string(Partie::AllCarte.at(6).second));
+    this->chiffre1ia->setString(std::to_string(Partie::AllCarte.at(3).second));
+    this->Playtext->setString(std::to_string(Partie::AllCarte.at(4).second));
+    this->Rtext->setString(std::to_string(Partie::AllCarte.at(5).second));
+    this->chiffre2ia->setString(std::to_string(Partie::AllCarte.at(7).second));
+    this->chiffre3ia->setString(std::to_string(Partie::AllCarte.at(8).second));
+    this->chiffre1->setString(std::to_string(Partie::AllCarte.at(9).second));
+    this->chiffre2->setString(std::to_string(Partie::AllCarte.at(10).second));
+    this->chiffre3->setString(std::to_string(Partie::AllCarte.at(11).second));
+    this->Humainselectiontext->setString(std::to_string(Partie::AllCarte.at(12).second));
+    this->Iaselectiontext->setString(std::to_string(Partie::AllCarte.at(13).second));
+    this->selectioncarte10->setString(std::to_string(Partie::AllCarte.at(14).second));
+    this->selectioncarte->setString(std::to_string(Partie::AllCarte.at(15).second));
+    this->selectioncarterng->setString(std::to_string(Partie::AllCarte.at(16).second));
+}
+
 void Partie::jeu(){
     if(this->jeubool==true){
         this->window->clear();
-        setupcard();
-        Humain *h1 = new Humain();
-        for(int i=0; i<7; i++){
-            h1->Deck.push_back(cuivre);
-            Partie::AllCarte.at(0).second--;
+        actualisercarte();
+        Joueur *j1 = new Joueur();
+        if(!jeustarted){
+            //std::cout<<"aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            this->setupcard();
+            //this->setupplayer(j1);
+            for(int i=0; i<7; i++){
+                j1->Deck.push_back(cuivre);
+                Partie::AllCarte.at(0).second--;
+            }
+            for(int i=0;i<3;i++){
+                 j1->Deck.push_back(Domaine);
+                 Partie::AllCarte.at(3).second--;
+            }
+            std::shuffle(std::begin(j1->Deck), std::end(j1->Deck), std::random_device());
+            for(int i=0;i<5;i++){
+                j1->piocher();
+            }
         }
-        for(int i=0;i<3;i++){
-            h1->Deck.push_back(Domaine);
-            Partie::AllCarte.at(3).second--;
-        }
-        std::shuffle(std::begin(h1->Deck), std::end(h1->Deck), std::random_device());
+        jeustarted=true;
         /*switch (nbjoueurhumain)
         {
         case 1:
@@ -904,6 +972,7 @@ void Partie::jeu(){
                 if(!button_pressed){
                     if(Partie::AllCarte.at(i).first->Phycarte->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                         Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+
                         button_pressed=true;
                     }
                 }
@@ -918,11 +987,26 @@ void Partie::jeu(){
             {
                 Partie::AllCarte.at(i).first->Phycarte->setScale(sf::Vector2f(0.75,0.75));
             }
+            else{
+                Partie::AllCarte.at(i).first->Phycarte->setScale(sf::Vector2f(0.6,0.6));
+            }
         }
+
+        //std::cout<<j1->Deck.at(0)->nom;
+
         window->draw(sf::Sprite(*this->backgroundtext));
         for(int i=Partie::AllCarte.size()-1; i>=0; i--){
             window->draw(*this->AllCarte.at(i).first->Phycarte);
         }
+        /*j1->Main.at(0)->Phycarte->setPosition(sf::Vector2f(800,800));
+        window->draw(*j1->Main.at(0)->Phycarte);*/
+        for(int i=0; i<j1->Main.size(); i++){
+            j1->Main.at(i)->Phycarte->setPosition(sf::Vector2f(1700-incrmain,800));
+            window->draw(*j1->Main.at(i)->Phycarte);
+            incrmain+=150;
+        }
+
+        
             window->draw(*this->chiffre0ia);
             window->draw(*this->chiffre1ia);
             window->draw(*this->chiffre2ia);

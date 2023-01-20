@@ -2,8 +2,9 @@
 #include "../../header/Cartes/Chapel.hpp"
 #include <string>
 
-void Chapel::appliquer_effet()
+void Chapel::appliquer_effet(Joueur *j)
 {
+    //Code dans partie
 }
 
 Chapel::Chapel(std::string name, int price, int money, int buy, int wdraw, int acti)

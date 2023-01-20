@@ -1,8 +1,11 @@
 #include "../../header/Cartes/Village.hpp"
 
-void Village::appliquer_effet()
+void Village::appliquer_effet(Joueur *j)
 {
+    j->piocher();
+    j->achat+=2;
 }
+
 Village::Village(std::string name, int price, int money, int buy, int wdraw, int acti)
     : Royaume(name, price, money, wdraw, buy, acti) 
     {

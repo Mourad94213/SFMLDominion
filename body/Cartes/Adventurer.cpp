@@ -8,6 +8,8 @@ void Adventurer::appliquer_effet(Joueur *j)
         j->piocher();
         if(j->Main.at(j->Main.size()-1)->nom == "Cuivre" || j->Main.at(j->Main.size()-1)->nom == "Argent" || j->Main.at(j->Main.size()-1)->nom == "Or"){
             compte++;
+        }
+        else{
             j->defausser(j->Main.at(j->Main.size()-1));
         }
     }

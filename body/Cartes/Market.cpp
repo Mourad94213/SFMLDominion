@@ -1,9 +1,14 @@
 #include "../../header/Cartes/Market.hpp"
 
 
-void Market::appliquer_effet()
+void Market::appliquer_effet(Joueur *j)
 {
+    j->achat++;
+    j->action++;
+    j->piocher();
+    j->nbrachat;
 }
+
 Market::Market(std::string name, int price, int money, int buy, int wdraw, int acti)
     : Royaume(name, price, money, wdraw, buy, acti) 
     {

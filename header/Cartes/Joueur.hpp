@@ -9,11 +9,11 @@ class Joueur
 {
 private:
     static int id;
-    
+
+public:
     int action;
     int achat;
-    
-public:
+    int nbrachat;
     std::vector<Cartes*> Deck;
     std::vector<Cartes*> Main;
     std::vector<Cartes*> Defausse;

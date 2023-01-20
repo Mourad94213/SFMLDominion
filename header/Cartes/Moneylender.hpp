@@ -7,7 +7,7 @@ class Moneylender : public Royaume
 private:
     
 public:
-    void appliquer_effet();
+    void appliquer_effet(Joueur *j);
     Moneylender(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Moneylender();
 };

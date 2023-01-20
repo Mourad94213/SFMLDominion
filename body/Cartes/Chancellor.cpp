@@ -1,7 +1,12 @@
 #include "../../header/Cartes/Chancellor.hpp"
 
-void Chancellor::appliquer_effet()
-{
+void Chancellor::appliquer_effet(Joueur *j)
+{   
+    j->achat+=2;
+    for(auto c : j->Deck){
+        j->Defausse.push_back(c);
+        j->Deck.erase(std::find(std::begin(j->Deck), std::end(j->Deck), c));
+    }
 }
 
 

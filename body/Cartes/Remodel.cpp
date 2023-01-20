@@ -10,6 +10,12 @@ Remodel::~Remodel()
 {
 }
 
-void Remodel::appliquer_effet()
+void Remodel::appliquer_effet(Joueur *j, Cartes *c)
 {
+    //click sur la carte
+    j->Main.erase(std::find(std::begin(j->Main), std::end(j->Main), c));
+    int temp=j->achat;
+    j->achat=c->cout+2;
+    j->acheter();
+    j->achat=temp;
 }

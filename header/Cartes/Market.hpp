@@ -7,7 +7,7 @@ class Market : public Royaume
 private:
     
 public:
-    void appliquer_effet();
+    void appliquer_effet(Joueur *j);
     Market(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Market();
 };

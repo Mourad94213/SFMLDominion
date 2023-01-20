@@ -1,8 +1,10 @@
 #include "../../header/Cartes/Gardens.hpp"
 
 
-void Gardens::appliquer_effet()
+int Gardens::appliquer_effet(Joueur *j)
 {
+    int final = j->Deck.size()/10;
+    return final;
 }
 
 Gardens::Gardens(std::string name, int price, int money, int buy, int wdraw, int acti)

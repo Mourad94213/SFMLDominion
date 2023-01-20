@@ -1,7 +1,9 @@
 #ifndef HUMAIN_H
 #define HUMAIN_H
 
-#include "../../header/Cartes/Joueur.hpp"
+#include "Joueur.hpp"
+#include <iostream>
+#include <vector>
 
 class Humain : public Joueur
 {

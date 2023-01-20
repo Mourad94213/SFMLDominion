@@ -1,6 +1,7 @@
 #ifndef ROYAUME_H
 #define ROYAUME_H
 #include "../../header/Cartes/Cartes.hpp"
+#include "Joueur.hpp"
 
 
 class Royaume : public Cartes

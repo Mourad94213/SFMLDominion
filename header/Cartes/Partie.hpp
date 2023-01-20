@@ -48,7 +48,6 @@ private:
 	void initFonts();
 	void initText();
     void initObjet();
-    static std::vector<std::pair<Cartes*, int>> AllCarte;
     std::vector<Cartes*> Defausse;
     sf::RenderWindow* window;
 	sf::VideoMode videoMode;
@@ -105,15 +104,19 @@ private:
     bool jeubool;
     bool reglebool;
 public:
+    static std::vector<std::pair<Cartes*, int>> AllCarte;
     Partie();
     ~Partie();
     void pollEvents();
     void run();
+    void actualisercarte();
     void setupcard();
+    void setupplayer(Joueur*);
     void menu();
     void choixselection();
     void jeu();
     void regle();
+
 };
 
 #endif
