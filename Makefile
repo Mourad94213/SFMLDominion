@@ -16,4 +16,5 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
 run: main
 	./main
 
-clean: 
+clean:
+	rm -f $(OBJ_DIR)/*.o $(OBJ_DIR)/*~ $(OBJ_DIR)/*.core

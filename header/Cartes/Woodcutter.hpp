@@ -7,7 +7,7 @@ class Woodcutter : public Royaume
 private:
     
 public:
-    void appliquer_effet(Joueur *j);
+    void appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur);
     Woodcutter(std::string name, int price, int money, int buy, int wdraw, int acti);
     ~Woodcutter();
 };

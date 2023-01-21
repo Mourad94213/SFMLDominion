@@ -5,11 +5,13 @@
 #include <algorithm>
 #include <vector>
 #include <random>
+#include <chrono>
+#include <thread>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include "Cartes.hpp"
 #include "Joueur.hpp"
+#include "Cartes.hpp"
 #include "Humain.hpp"
 #include "Adventurer.hpp"
 #include "Bureaucrat.hpp"

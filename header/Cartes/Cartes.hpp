@@ -6,6 +6,7 @@
 #include <./SFML/Graphics.hpp>
 #include <./SFML/Window.hpp>
 #include <./SFML/System.hpp>
+class Joueur;
 
 class Cartes
 {
@@ -15,8 +16,9 @@ public:
     std::string nom;
     int cout;
     sf::Texture *textCarte;
-    sf::RectangleShape *Phycarte;
+    std::vector<sf::RectangleShape*> *Phycarte;
     Cartes(std::string nom, int cout);
+    virtual void appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur);
     ~Cartes();
 };
 

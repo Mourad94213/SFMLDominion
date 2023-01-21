@@ -20,15 +20,16 @@ void Joueur::acheter()
     
 }
 
-void Joueur::defausser(Cartes *c)
+void Joueur::defausser(std::pair<Cartes*, sf::RectangleShape*> c)
 {
-    this->Main.push_back(c);
-    this->Deck.erase(std::find(this->Deck.begin(), this->Deck.end(), c));
+    this->Defausse.push_back(c);
+    this->plateau.erase(std::find(this->plateau.begin(), this->plateau.end(), c));
 }
 
-void Joueur::jouer_carte()
+void Joueur::jouer_carte(std::pair<Cartes*, sf::RectangleShape*> c)
 {
-
+    this->plateau.push_back(c);
+    this->Main.erase(std::find(this->Main.begin(), this->Main.end(), c));
 }
 
 void Joueur::piocher(){

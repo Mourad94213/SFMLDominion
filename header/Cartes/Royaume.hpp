@@ -14,7 +14,7 @@ class Royaume : public Cartes
     public:
         Royaume(std::string name, int price, int money, int buy, int wdraw, int acti);
         ~Royaume();
-        virtual void appliquer_effet();
+        virtual void appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur);
 };
 
 

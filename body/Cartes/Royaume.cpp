@@ -9,8 +9,9 @@ Royaume::~Royaume()
 {
 }
 
-void Royaume::appliquer_effet()
+void Royaume::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
+    
 }
 
 
