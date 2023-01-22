@@ -7,6 +7,9 @@ int incrmain=0;
 bool jeustarted=false;
 bool button_pressed=false;
 bool phaseachat=false;
+bool phaseaction=true;
+bool boutonachat=false;
+bool boutonaction = false;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -41,7 +44,8 @@ Victoire *Duche = new Victoire("Duche",5,3);
 Victoire *Province = new Victoire("Province",8,6);
 Victoire *Malediction = new Victoire("Malediction",0,-1);
 Joueur *jtest = new Joueur();
-std::vector<Joueur*> allplayer;
+Joueur *jtest2 = new Joueur();
+std::vector<Joueur*> allplayer = {jtest, jtest2};
 
 void Partie::initVariables()
 {
@@ -741,8 +745,11 @@ void Partie::setupcard(){
     }
 
     for(int i=0; i<Partie::AllCarte.size(); i++){
-        Partie::AllCarte.at(i).first->Phycarte->at(0)->setOrigin(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().height/2, Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().width/2);
+        for(int y=0; y<Partie::AllCarte.at(i).first->Phycarte->size(); y++){
+            Partie::AllCarte.at(i).first->Phycarte->at(y)->setOrigin(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().height/2, Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().width/2);
+        }
     }
+
 
     this->chiffre0ia->setString(std::to_string(Partie::AllCarte.at(0).second));
     this->chiffre0ia->setCharacterSize(40);
@@ -868,6 +875,12 @@ void Partie::setupcard(){
     this->finachat->setScale(sf::Vector2f(0.2,0.2));
     this->finachat->setOrigin(sf::Vector2f(820/2,304/2));
     this->finachat->setPosition(sf::Vector2f(1600,400));
+
+    this->finaction = new sf::Sprite();
+    this->finaction->setTexture(*buttontext);
+    this->finaction->setScale(sf::Vector2f(0.2,0.2));
+    this->finaction->setOrigin(sf::Vector2f(820/2,304/2));
+    this->finaction->setPosition(sf::Vector2f(1600,400));
 }
 
 /*Joueur* Partie::creerjoueur(){
@@ -1011,6 +1024,8 @@ void Partie::jeu(){
 
         if(ev.type == sf::Event::MouseButtonReleased){
             button_pressed=false;
+            boutonachat=false;
+            boutonaction=true;
         }
         
         /*for(int i=0; i<Partie::AllCarte.size(); i++){
@@ -1043,7 +1058,7 @@ void Partie::jeu(){
         }
         incrmain=0;
 
-        
+
             window->draw(*this->chiffre0ia);
             window->draw(*this->chiffre1ia);
             window->draw(*this->chiffre2ia);
@@ -1061,15 +1076,56 @@ void Partie::jeu(){
             window->draw(*this->selectioncarte10);
             window->draw(*this->selectioncarte);
             window->draw(*this->selectioncarterng);
+        if(phaseaction){
             window->draw(*this->finachat);
-        this->window->display();
-        phaseachat=true;
-        while(phaseachat){
-            /*if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+            for(int i=0; i<Partie::AllCarte.size(); i++){
+                Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(255,255,255));
+            }
+            if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                 if(finachat->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                    phaseachat=false;
+                    if(!boutonachat){
+                        phaseachat=true;
+                        phaseaction=false;
+                        boutonachat=true;
+                    }
                 }
-            }*/
+            }
+            for(int i=0; i<jtest->Main.size(); i++){
+                if(jtest->Main.at(i).first->nom!="Cuivre" || jtest->Main.at(i).first->nom!="Argent" || jtest->Main.at(i).first->nom!="Or"
+                || jtest->Main.at(i).first->nom!="Malediction" || jtest->Main.at(i).first->nom!="Duche" || jtest->Main.at(i).first->nom!="Province"
+                || jtest->Main.at(i).first->nom!="Domaine"){
+                    if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                            if(!button_pressed){
+                                if(jtest->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                    jtest->action--;
+                                    jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
+                                }
+                            }
+                    }
+                    for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
+                        if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
+                        {
+                            jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
+                        }
+                        else{
+                            jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
+                        }
+                    }   
+                }
+                
+            }
+        }
+        if(phaseachat){
+            window->draw(*this->finaction);
+            if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                if(finaction->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                    if(!boutonachat){
+                        phaseachat=false;
+                        phaseaction=true;
+                        boutonachat=true;
+                    }
+                }
+            }
             for(int i=0; i<Partie::AllCarte.size(); i++){
                     if(Partie::AllCarte.at(i).first->cout>jtest->achat){
                         sf::Uint8 light = 100;
@@ -1079,14 +1135,30 @@ void Partie::jeu(){
                         if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                                 if(!button_pressed){
                                     if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                        /*if(Partie::AllCarte.at(i).first->nom!="Cuivre" || Partie::AllCarte.at(i).first->nom!="Argent" || Partie::AllCarte.at(i).first->nom!="Or"
-                                        || Partie::AllCarte.at(i).first->nom!="Malediction" || Partie::AllCarte.at(i).first->nom!="Duche" || Partie::AllCarte.at(i).first->nom!="Province"
-                                        || Partie::AllCarte.at(i).first->nom!="Domaine"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(10-Partie::AllCarte.at(i).second)));
+                                        if(Partie::AllCarte.at(i).first->nom!="Cuivre"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(61-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Argent"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(41-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Or"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Malediction"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Domaine"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(25-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Duche"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(13-Partie::AllCarte.at(i).second)));
+                                        }
+                                        if(Partie::AllCarte.at(i).first->nom!="Province"){
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(9-Partie::AllCarte.at(i).second)));
                                         }
                                         else{
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(30-Partie::AllCarte.at(i).second)));
-                                        }*/
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(11-Partie::AllCarte.at(i).second)));
+                                        }
                                         jtest->nbrachat--;
                                         Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
                                         button_pressed=true;
@@ -1105,8 +1177,11 @@ void Partie::jeu(){
                     }
                 
             }
-            phaseachat=false;
+            //phaseachat=false;
         }
+        this->window->display();
+
+        
     }
 }
 

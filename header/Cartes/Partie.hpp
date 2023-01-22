@@ -58,6 +58,7 @@ private:
     sf::Sprite *buttonplay;
     sf::Texture *buttontext;
     sf::Sprite *finachat;
+    sf::Sprite *finaction;
     sf::Sprite *boutonDominion;
     sf::Texture *boutonDominiontexture;
     sf::Sprite *Rbutton;
