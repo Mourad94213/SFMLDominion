@@ -12,9 +12,9 @@ private:
     static int id;
 
 public:
-    int action;
-    int achat;
-    int nbrachat;
+    int action=1;
+    int achat=0;
+    int nbrachat=1;
     std::vector<std::pair<Cartes*,sf::RectangleShape*>> Deck;
     std::vector<std::pair<Cartes*,sf::RectangleShape*>> Main;
     std::vector<std::pair<Cartes*,sf::RectangleShape*>> Defausse;

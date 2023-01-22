@@ -4,7 +4,7 @@
 
 void Bureaucrat::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
-    j->Deck.push_back(std::pair(Partie::AllCarte.at(1).first, j->Deck.at(30-Partie::AllCarte.at(1).second).second));
+    j->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(1).first, j->Deck.at(30-Partie::AllCarte.at(1).second).second));
     Partie::AllCarte.at(1).second--;
     for(int i=0; i<alljoueur.size(); i++){
         if(alljoueur.at(i)->getid!=j->getid){

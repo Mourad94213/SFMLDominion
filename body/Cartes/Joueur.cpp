@@ -4,6 +4,7 @@ int Joueur::id=0;
 
 Joueur::Joueur(){
     id++;
+    std::cout<<nbrachat;
 }
 
 Joueur::~Joueur(){

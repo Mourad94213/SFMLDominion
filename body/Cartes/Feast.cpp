@@ -12,7 +12,7 @@ void Feast::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
             break;
         }
     }
-    j->Main.erase(std::find(std::begin(j->Main), std::end(j->Main), std::pair(j->Main.at(index).first, j->Main.at(index).second)));
+    j->Main.erase(std::find(std::begin(j->Main), std::end(j->Main), std::pair<Cartes*,sf::RectangleShape*>(j->Main.at(index).first, j->Main.at(index).second)));
     int achatprov=5;
     int temp=j->achat;
     j->achat=achatprov;
