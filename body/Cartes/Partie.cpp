@@ -1039,7 +1039,7 @@ void Partie::jeu(){
                 }
             }
         }*/
-
+        std::cout << Partie::AllCarte.at(0).second;
         
         window->draw(sf::Sprite(*this->backgroundtext));
 
@@ -1076,6 +1076,7 @@ void Partie::jeu(){
             window->draw(*this->selectioncarte10);
             window->draw(*this->selectioncarte);
             window->draw(*this->selectioncarterng);
+        
         if(phaseaction){
             window->draw(*this->finachat);
             for(int i=0; i<Partie::AllCarte.size(); i++){
