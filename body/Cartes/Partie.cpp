@@ -1175,28 +1175,28 @@ void Partie::jeu(){
                                 if(!button_pressed){
                                     if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                                         if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(61-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Argent"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(41-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Or"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Malediction"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Domaine"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(25-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Duche"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(13-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         if(Partie::AllCarte.at(i).first->nom=="Province"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(9-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         else{
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(10-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                         }
                                         jtest->nbrachat--;
                                         Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
