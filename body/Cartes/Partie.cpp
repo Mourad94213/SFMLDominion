@@ -722,8 +722,9 @@ void Partie::choixselection(){
 
 void Partie::setupcard(){
     for(int i=0; i<Partie::AllCarte.size(); i++){
-        Partie::AllCarte.at(i).first->Phycarte->at(0)->setScale(sf::Vector2f(0.6,0.6));
-        Partie::AllCarte.at(i).first->Phycarte->at(1)->setScale(sf::Vector2f(0.6,0.6));
+        for(int y=0; y<Partie::AllCarte.at(i).first->Phycarte->size(); y++){
+            Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
+        }
     }
     Partie::AllCarte.at(0).first->Phycarte->at(0)->setPosition(sf::Vector2f(100,100));
     Partie::AllCarte.at(1).first->Phycarte->at(0)->setPosition(sf::Vector2f(100,330));
@@ -950,12 +951,12 @@ void Partie::jeu(){
             this->setupcard();
             
             //this->setupplayer(j1);
-            for(int i=1; i<8; i++){
-                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(cuivre, cuivre->Phycarte->at(i)));
+            for(int i=0; i<7; i++){
+                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(cuivre, cuivre->Phycarte->at(Partie::AllCarte.at(0).second-1)));
                 Partie::AllCarte.at(0).second--;
             }
-            for(int i=1;i<4;i++){
-                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(Domaine, Domaine->Phycarte->at(i)));
+            for(int i=0;i<3;i++){
+                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(Domaine, Domaine->Phycarte->at(Partie::AllCarte.at(3).second-1)));
                 Partie::AllCarte.at(3).second--;
             }
             std::shuffle(std::begin(jtest->Deck), std::end(jtest->Deck), std::random_device());
@@ -1047,8 +1048,28 @@ void Partie::jeu(){
         
 
         for(int i=Partie::AllCarte.size()-1; i>=0; i--){
-            window->draw(*this->AllCarte.at(i).first->Phycarte->at(0));
+            if(Partie::AllCarte.at(i).second>0){
+                window->draw(*this->AllCarte.at(i).first->Phycarte->at(0));
+            }
         }
+
+        for(int i=0; i<jtest->Defausse.size(); i++){
+            jtest->Defausse.at(i).second->setPosition(sf::Vector2f(1700-incrmain,100));
+            //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
+            //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
+            window->draw(*jtest->Defausse.at(i).second);
+            incrmain+=150;
+        }
+        incrmain=0;
+
+        for(int i=0; i<jtest->Deck.size(); i++){
+            jtest->Deck.at(i).second->setPosition(sf::Vector2f(1700-incrmain,400));
+            //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
+            //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
+            window->draw(*jtest->Deck.at(i).second);
+            incrmain+=150;
+        }
+        incrmain=0;
 
         for(int i=0; i<jtest->Main.size(); i++){
             jtest->Main.at(i).second->setPosition(sf::Vector2f(1700-incrmain,750));
@@ -1077,7 +1098,7 @@ void Partie::jeu(){
             window->draw(*this->selectioncarte10);
             window->draw(*this->selectioncarte);
             window->draw(*this->selectioncarterng);
-        
+        //std::cout << jtest->Main.size();
         if(phaseaction){
             if(entrer){
                 for(int i=0; i<5; i++){
@@ -1116,27 +1137,47 @@ void Partie::jeu(){
                     }
                 }
             }
+            if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                if(!button_pressed){
+                        if(jtest->Main.at(0).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                            jtest->action--;
+                            jtest->Main.at(0).first->appliquer_effet(jtest, allplayer);
+                        }
+                        if(jtest->Main.at(1).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                            jtest->action--;
+                            jtest->Main.at(1).first->appliquer_effet(jtest, allplayer);
+                        }
+                        if(jtest->Main.at(2).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                            jtest->action--;
+                            jtest->Main.at(2).first->appliquer_effet(jtest, allplayer);
+                        }
+                }
+            }
+            std::cout << allplayer.size();
             for(int i=0; i<jtest->Main.size(); i++){
-                if(jtest->Main.at(i).first->nom!="Cuivre" || jtest->Main.at(i).first->nom!="Argent" || jtest->Main.at(i).first->nom!="Or"
-                || jtest->Main.at(i).first->nom!="Malediction" || jtest->Main.at(i).first->nom!="Duche" || jtest->Main.at(i).first->nom!="Province"
-                || jtest->Main.at(i).first->nom!="Domaine"){
+                std::cout << "(" << i << " " << jtest->Main.size() << ")";
+                if(jtest->Main.at(i).first->nom!="Cuivre" && jtest->Main.at(i).first->nom!="Argent" && jtest->Main.at(i).first->nom!="Or"
+                && jtest->Main.at(i).first->nom!="Malediction" && jtest->Main.at(i).first->nom!="Duche" && jtest->Main.at(i).first->nom!="Province"
+                && jtest->Main.at(i).first->nom!="Domaine"){
                     if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                             if(!button_pressed){
-                                if(jtest->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                    jtest->action--;
-                                    jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
-                                }
+                                    if(jtest->Main.at(i).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                        jtest->action--;
+                                        //jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
+                                    }
                             }
                     }
                     for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
-                        if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
+                        if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && jtest->Main.at(i).first->nom!="Cuivre" && jtest->Main.at(i).first->nom!="Argent" && jtest->Main.at(i).first->nom!="Or"
+                        && jtest->Main.at(i).first->nom!="Malediction" && jtest->Main.at(i).first->nom!="Duche" && jtest->Main.at(i).first->nom!="Province"
+                        && jtest->Main.at(i).first->nom!="Domaine" )
                         {
                             jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
                         }
                         else{
                             jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
                         }
-                    }   
+                    }
                 }
                 
             }
@@ -1149,8 +1190,7 @@ void Partie::jeu(){
                         for(int i=0; i<jtest->plateau.size(); i++){
                             jtest->defausserplateau(jtest->plateau.at(i));
                         }
-                        int taille = jtest->Main.size();
-                        for(int i=0; i<taille; i++){
+                        for(int i=0; i<5; i++){
                             std::cout << jtest->Main.at(0).first->nom;
                             jtest->defaussermain(jtest->Main.at(0));
                             
@@ -1168,56 +1208,81 @@ void Partie::jeu(){
             for(int i=0; i<Partie::AllCarte.size(); i++){
                     if(Partie::AllCarte.at(i).first->cout>jtest->achat){
                         sf::Uint8 light = 100;
-                        Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
+                        if(Partie::AllCarte.at(i).second>0){
+                            Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
+                        }
+                        
                     }
                     else{
-                        if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
-                                if(!button_pressed){
-                                    if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                        if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                        if(jtest->nbrachat>0){
+                            if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                                    if(!button_pressed){
+                                        if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && Partie::AllCarte.at(i).second>0){
+                                            if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                                //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Argent"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Or"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Malediction"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Domaine"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Duche"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            if(Partie::AllCarte.at(i).first->nom=="Province"){
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            else{
+                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                                //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            }
+                                            jtest->nbrachat--;
+                                            jtest->achat-=Partie::AllCarte.at(i).first->cout;
+                                            Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+                                            button_pressed=true;
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom=="Argent"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        if(Partie::AllCarte.at(i).first->nom=="Or"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        if(Partie::AllCarte.at(i).first->nom=="Malediction"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        if(Partie::AllCarte.at(i).first->nom=="Domaine"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        if(Partie::AllCarte.at(i).first->nom=="Duche"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        if(Partie::AllCarte.at(i).first->nom=="Province"){
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        else{
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
-                                        }
-                                        jtest->nbrachat--;
-                                        Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
-                                        button_pressed=true;
                                     }
+                            }
+                            for(int y=0; y<Partie::AllCarte.at(i).first->Phycarte->size(); y++){
+                                if(Partie::AllCarte.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
+                                {
+                                    Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
                                 }
+                                else{
+                                    Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
+                                }
+                            }
                         }
-                        for(int y=0; y<Partie::AllCarte.at(i).first->Phycarte->size(); y++){
-                            if(Partie::AllCarte.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
-                            {
-                                Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
+                        else{
+                            sf::Uint8 light = 100;
+                            if(Partie::AllCarte.at(i).second>0){
+                                Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
                             }
-                            else{
-                                Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
-                            }
-                        }   
+                        }
                     }
-                
             }
             //phaseachat=false;
         }
+        /*std::cout<< "Deck : ";
+        for(int i=0; i<jtest->Deck.size(); i++){
+            std::cout<< jtest->Deck.at(i).first->nom << std::endl;
+        }
+        std::cout<< "Main : ";
+        for(int i=0; i<jtest->Main.size(); i++){
+            std::cout<< jtest->Main.at(i).first->nom << std::endl;
+        }
+        std::cout<< "Defausse : ";
+        for(int i=0; i<jtest->Defausse.size(); i++){
+            std::cout<< jtest->Defausse.at(i).first->nom << std::endl;
+        }*/
         this->window->display();
 
         

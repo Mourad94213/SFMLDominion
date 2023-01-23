@@ -2,9 +2,9 @@
 
 void Smithy::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
-    j->piocher();
-    j->piocher();
-    j->piocher();
+    for(int i=0; i<3; i++){
+        j->piocher();
+    }
 }
 
 Smithy::Smithy(std::string name, int price, int money, int buy, int wdraw, int acti)

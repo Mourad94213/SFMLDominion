@@ -39,6 +39,13 @@ void Joueur::jouer_carte(std::pair<Cartes*, sf::RectangleShape*> c)
 }
 
 void Joueur::piocher(){
+    /*if(this->Deck.size()==0){
+        for(int i=0; i<this->Defausse.size(); i++){
+            this->Deck.push_back(this->Defausse.at(i));
+        }
+        this->Defausse.clear();
+        std::shuffle(std::begin(this->Deck), std::end(this->Deck), std::random_device());
+    }*/
     this->Main.push_back(this->Deck.at(0));
-    this->Deck.erase(std::begin(this->Deck));
+    this->Deck.erase(this->Deck.begin());
 }

@@ -4,6 +4,7 @@
 #include "Cartes.hpp"
 #include <iostream>
 #include <vector>
+#include <random>
 
 
 class Joueur
