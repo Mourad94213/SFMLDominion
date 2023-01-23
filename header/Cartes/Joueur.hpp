@@ -23,7 +23,8 @@ public:
     ~Joueur();
     static int getid();
     virtual void acheter();
-    virtual void defausser(std::pair<Cartes*, sf::RectangleShape*> c);
+    virtual void defausserplateau(std::pair<Cartes*, sf::RectangleShape*> c);
+    virtual void defaussermain(std::pair<Cartes*,sf::RectangleShape*> c);
     virtual void jouer_carte(std::pair<Cartes*, sf::RectangleShape*> c);
     virtual void piocher();
 };

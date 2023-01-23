@@ -10,6 +10,7 @@ bool phaseachat=false;
 bool phaseaction=true;
 bool boutonachat=false;
 bool boutonaction = false;
+bool entrer=true;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -958,7 +959,7 @@ void Partie::jeu(){
                 Partie::AllCarte.at(3).second--;
             }
             std::shuffle(std::begin(jtest->Deck), std::end(jtest->Deck), std::random_device());
-            for(int i=0;i<5;i++){
+            /*for(int i=0;i<5;i++){
                 jtest->piocher();
             }
             for(int i=0; i<jtest->Main.size(); i++){
@@ -971,7 +972,7 @@ void Partie::jeu(){
             else if(jtest->Main.at(i).first->nom=="Or"){
                 jtest->achat+=3;
             }
-        }
+        }*/
         }
         jeustarted=true;
         /*switch (nbjoueurhumain)
@@ -1039,7 +1040,7 @@ void Partie::jeu(){
                 }
             }
         }*/
-        std::cout << Partie::AllCarte.at(0).second;
+        //std::cout << Partie::AllCarte.at(16).second << " ";
         
         window->draw(sf::Sprite(*this->backgroundtext));
 
@@ -1078,6 +1079,30 @@ void Partie::jeu(){
             window->draw(*this->selectioncarterng);
         
         if(phaseaction){
+            if(entrer){
+                for(int i=0; i<5; i++){
+                    if(jtest->Deck.size()==0){
+                        for(int i=0; i<jtest->Defausse.size(); i++){
+                            jtest->Deck.push_back(jtest->Defausse.at(i));
+                        }
+                        jtest->Defausse.clear();
+                        std::shuffle(std::begin(jtest->Deck), std::end(jtest->Deck), std::random_device());
+                    }
+                    jtest->piocher();
+                }
+                for(int i=0; i<jtest->Main.size(); i++){
+                        if(jtest->Main.at(i).first->nom=="Cuivre"){
+                            jtest->achat++;
+                        }
+                        else if(jtest->Main.at(i).first->nom=="Argent"){
+                            jtest->achat+=2;
+                        }
+                        else if(jtest->Main.at(i).first->nom=="Or"){
+                            jtest->achat+=3;
+                        }
+                    }
+            entrer=false;
+            }
             window->draw(*this->finachat);
             for(int i=0; i<Partie::AllCarte.size(); i++){
                 Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(255,255,255));
@@ -1121,9 +1146,22 @@ void Partie::jeu(){
             if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                 if(finaction->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                     if(!boutonachat){
+                        for(int i=0; i<jtest->plateau.size(); i++){
+                            jtest->defausserplateau(jtest->plateau.at(i));
+                        }
+                        int taille = jtest->Main.size();
+                        for(int i=0; i<taille; i++){
+                            std::cout << jtest->Main.at(0).first->nom;
+                            jtest->defaussermain(jtest->Main.at(0));
+                            
+                        }
+                        jtest->achat=0;
+                        jtest->action=1;
+                        jtest->nbrachat=1;
                         phaseachat=false;
                         phaseaction=true;
                         boutonachat=true;
+                        entrer=true;
                     }
                 }
             }
@@ -1136,29 +1174,29 @@ void Partie::jeu(){
                         if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                                 if(!button_pressed){
                                     if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                        if(Partie::AllCarte.at(i).first->nom!="Cuivre"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(61-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Argent"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Argent"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(41-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Or"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Or"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Malediction"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Malediction"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(31-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Domaine"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Domaine"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(25-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Duche"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Duche"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(13-Partie::AllCarte.at(i).second)));
                                         }
-                                        if(Partie::AllCarte.at(i).first->nom!="Province"){
+                                        if(Partie::AllCarte.at(i).first->nom=="Province"){
                                             jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(9-Partie::AllCarte.at(i).second)));
                                         }
                                         else{
-                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(11-Partie::AllCarte.at(i).second)));
+                                            jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(10-Partie::AllCarte.at(i).second)));
                                         }
                                         jtest->nbrachat--;
                                         Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;

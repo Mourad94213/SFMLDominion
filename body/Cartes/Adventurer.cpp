@@ -10,7 +10,7 @@ void Adventurer::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
             compte++;
         }
         else{
-            j->defausser(j->Main.at(j->Main.size()-1));
+            j->defausserplateau(j->Main.at(j->Main.size()-1));
         }
     }
 }
@@ -19,7 +19,10 @@ void Adventurer::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 Adventurer::Adventurer(std::string name, int price, int money, int buy, int wdraw, int acti)
     : Royaume(name, price, money, wdraw, buy, acti) 
     {
-        this->Phycarte->at(0)->setTextureRect(sf::IntRect(6*2415/7, 1*2760/5, 2415 / 7, 2760 / 5));
+        for(int i=0; i<this->Phycarte->size(); i++){
+            this->Phycarte->at(i)->setTextureRect(sf::IntRect(6*2415/7, 1*2760/5, 2415 / 7, 2760 / 5));
+        }
+        
     }
 
 Adventurer::~Adventurer()
