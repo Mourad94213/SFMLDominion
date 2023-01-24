@@ -45,7 +45,7 @@ Cartes::Cartes(std::string nom, int cout)
         }
     }
     else if(this->nom=="Province"){
-        for(int i=0; i<8; i++){
+        for(int i=0; i<12; i++){
             Phycarte->push_back(new sf::RectangleShape((sf::Vector2f(220,360))));
         }
     }

@@ -69,13 +69,10 @@ void Partie::initVariables()
     Partie::AllCarte.push_back(std::pair<Tresor*,int>(Or,30));
     Partie::AllCarte.push_back(std::pair<Victoire*,int>(Domaine,24));
     Partie::AllCarte.push_back(std::pair<Victoire*,int>(Duche,12));
-
-    if(Joueur::getid()>2){
-        Partie::AllCarte.push_back(std::pair<Victoire*,int>(Province,12));
-    }
-    else{
+    Partie::AllCarte.push_back(std::pair<Victoire*,int>(Province,12));
+    /*else{
         Partie::AllCarte.push_back(std::pair<Victoire*,int>(Province,8));
-    }
+    }*/
     Partie::AllCarte.push_back(std::pair<Victoire*,int>(Malediction,30));
     
 }
@@ -1242,6 +1239,9 @@ void Partie::jeu(){
                     }
                     allplayer.at(joueurplus)->piocher();
                 }
+                while(allplayer.at(joueurplus)->Main.at(allplayer.at(joueurplus)->Main.size()-1).first->nom=="Festival" || allplayer.at(joueurplus)->Main.at(allplayer.at(joueurplus)->Main.size()-1).first->nom=="Woodcutter"){
+                    std::shuffle(std::begin(allplayer.at(joueurplus)->Main), std::end(allplayer.at(joueurplus)->Main), std::random_device());
+                }
                 for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
                         if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Cuivre"){
                             allplayer.at(joueurplus)->achat++;
@@ -1286,7 +1286,7 @@ void Partie::jeu(){
                 //std::cout << "(" << i << " " << jtest->Main.size() << ")";
                 if(allplayer.at(joueurplus)->Main.at(i).first->nom!="Cuivre" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Argent" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Or"
                 && allplayer.at(joueurplus)->Main.at(i).first->nom!="Malediction" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Duche" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Province"
-                && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine"){
+                && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Gardens"){
                     if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                             
                                 for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
@@ -1317,17 +1317,20 @@ void Partie::jeu(){
                                                     workshopbool=true;
                                                 }*/
                                                 allplayer.at(joueurplus)->plateau.at(allplayer.at(joueurplus)->plateau.size()-1).first->appliquer_effet(allplayer.at(joueurplus), allplayer);
+                                                while(allplayer.at(joueurplus)->Main.at(allplayer.at(joueurplus)->Main.size()-1).first->nom=="Festival" || allplayer.at(joueurplus)->Main.at(allplayer.at(joueurplus)->Main.size()-1).first->nom=="Woodcutter"){
+                                                    std::shuffle(std::begin(allplayer.at(joueurplus)->Main), std::end(allplayer.at(joueurplus)->Main), std::random_device());
+                                                }
                                                 allplayer.at(joueurplus)->Main.erase(std::find(allplayer.at(joueurplus)->Main.begin(), allplayer.at(joueurplus)->Main.end(), allplayer.at(joueurplus)->Main.at(i)));
                                                 button_pressed=true;
+                                                
                                             }
-                                }
-                                
+                                } 
                             }
                     }
                     for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
                         if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && allplayer.at(joueurplus)->Main.at(i).first->nom!="Cuivre" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Argent" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Or"
                         && allplayer.at(joueurplus)->Main.at(i).first->nom!="Malediction" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Duche" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Province"
-                        && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine" )
+                        && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Gardens")
                         {
                             allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
                         }
