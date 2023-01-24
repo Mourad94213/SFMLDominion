@@ -18,7 +18,7 @@ void CouncilRoom::appliquer_effet(Joueur* j, std::vector<Joueur*> alljoueur)
             j->achat+=3;
         }
     }
-    j->achat++;
+    j->nbrachat++;
     for(Joueur *h : alljoueur){
         if(h!=j){
             h->piocher();

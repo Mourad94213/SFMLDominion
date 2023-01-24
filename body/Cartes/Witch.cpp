@@ -1,5 +1,6 @@
 #include "../../header/Cartes/Witch.hpp"
 
+
 void Witch::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
     bool inattaquable=false;
@@ -23,11 +24,12 @@ void Witch::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
                     inattaquable=true;
                 }
             }
-            if(inattaquable){
+            if(!inattaquable){
                 h->Defausse.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(6).first, Partie::AllCarte.at(6).first->Phycarte->at(Partie::AllCarte.at(6).second-1)));
                 Partie::AllCarte.at(6).second--;
             }
         }
+        inattaquable=false;
     }
     
 }

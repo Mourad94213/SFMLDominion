@@ -707,20 +707,20 @@ void Partie::choixselection(){
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Douves, 10));
 
                     PreteurSurGage->~Moneylender();
-                    Douves->~Moat();
-                    Jardins->~Gardens();
-                    SalleDuConseil->~CouncilRoom();
+                    Chapelle->~Chapel();
+                    Cave->~Cellar();
+                    atelier->~Workshop();
                     SalleDuTrone->~ThroneRoom();
                     Milice->~Militia();
                     Bureaucrate->~Bureaucrat();
-                    festival->~Festival();
+                    Renovation->~Remodel();
                     Bibliotheque->~Library();
                     Voleur->~Thief();
                     Chancelier->~Chancellor();
                     Festin->~Feast();
                     Aventurier->~Adventurer();
                     Espion->~Spy();
-                    Laboratoire->~Laboratory();
+                    mine->~Mine();
 
 
                     selectionbool=false;
@@ -1066,6 +1066,8 @@ void Partie::jeu(){
                 }
                 std::shuffle(std::begin(allplayer.at(i)->Deck), std::end(allplayer.at(i)->Deck), std::random_device());
             }
+            //allplayer.at(0)->Main.push_back(std::pair<Cartes*,sf::RectangleShape*>(Jardins, Jardins->Phycarte->at(Partie::AllCarte.at(13).second-1)));
+            //allplayer.at(1)->Main.push_back(std::pair<Cartes*,sf::RectangleShape*>(Douves, Douves->Phycarte->at(Partie::AllCarte.at(16).second-1)));
             //this->setupplayer(j1);
             
             /*for(int i=0;i<5;i++){
@@ -1286,39 +1288,40 @@ void Partie::jeu(){
                 && allplayer.at(joueurplus)->Main.at(i).first->nom!="Malediction" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Duche" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Province"
                 && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine"){
                     if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
-                            if(!button_pressed){
+                            
                                 for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
-                                    if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                        allplayer.at(joueurplus)->action--;
-                                        allplayer.at(joueurplus)->plateau.push_back(allplayer.at(joueurplus)->Main.at(i));
-                                        /*if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Cellar"){
-                                            //cellar(allplayer.at(joueurplus));
-                                            //effetcellar=true;
-                                            //while(effetcellar){
-                                                //std::cout << "A";
-                                                /*if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
-                                                    if(!button_pressed){
-                                                        if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                                            allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->Main.at(i));
-                                                            allplayer.at(joueurplus)->piocher();
-                                                            button_pressed=true;
+                                        if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                            if(!button_pressed){
+                                                allplayer.at(joueurplus)->action--;
+                                                allplayer.at(joueurplus)->plateau.push_back(allplayer.at(joueurplus)->Main.at(i));
+                                                /*if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Cellar"){
+                                                    //cellar(allplayer.at(joueurplus));
+                                                    //effetcellar=true;
+                                                    //while(effetcellar){
+                                                        //std::cout << "A";
+                                                        /*if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                                                            if(!button_pressed){
+                                                                if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                                                    allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->Main.at(i));
+                                                                    allplayer.at(joueurplus)->piocher();
+                                                                    button_pressed=true;
+                                                                }
+                                                            }
+                                                        }*/
+                                                        /*if(this->ev.key.code == sf::Keyboard::S){
+                                                            effetcellar=false;
                                                         }
-                                                    }
-                                                }*/
-                                                /*if(this->ev.key.code == sf::Keyboard::S){
-                                                     effetcellar=false;
+                                                    //}
                                                 }
-                                            //}
-                                        }
-                                        if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Workshop"){
-                                            workshopbool=true;
-                                        }*/
-                                        allplayer.at(joueurplus)->plateau.at(allplayer.at(joueurplus)->plateau.size()-1).first->appliquer_effet(allplayer.at(joueurplus), allplayer);
-                                        allplayer.at(joueurplus)->Main.erase(std::find(allplayer.at(joueurplus)->Main.begin(), allplayer.at(joueurplus)->Main.end(), allplayer.at(joueurplus)->Main.at(i)));
-                                        button_pressed=true;
-                                    }
+                                                if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Workshop"){
+                                                    workshopbool=true;
+                                                }*/
+                                                allplayer.at(joueurplus)->plateau.at(allplayer.at(joueurplus)->plateau.size()-1).first->appliquer_effet(allplayer.at(joueurplus), allplayer);
+                                                allplayer.at(joueurplus)->Main.erase(std::find(allplayer.at(joueurplus)->Main.begin(), allplayer.at(joueurplus)->Main.end(), allplayer.at(joueurplus)->Main.at(i)));
+                                                button_pressed=true;
+                                            }
                                 }
-    
+                                
                             }
                     }
                     for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
@@ -1422,8 +1425,8 @@ void Partie::jeu(){
                                                 allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                                 //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            //allplayer.at(joueurplus)->nbrachat--;
-                                            //allplayer.at(joueurplus)->achat-=Partie::AllCarte.at(i).first->cout;
+                                            allplayer.at(joueurplus)->nbrachat--;
+                                            allplayer.at(joueurplus)->achat-=Partie::AllCarte.at(i).first->cout;
                                             Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
                                             if(Partie::AllCarte.at(i).second==0){
                                                 comptedeckvide++;
@@ -1582,6 +1585,9 @@ void Partie::findejeu(){
             for(int y=0; y<allplayer.at(i)->Defausse.size(); y++){
                 allplayer.at(i)->Deck.push_back(allplayer.at(i)->Defausse.at(y));
             }
+            for(int y=0; y<allplayer.at(i)->plateau.size(); y++){
+                allplayer.at(i)->Deck.push_back(allplayer.at(i)->plateau.at(y));
+            }
         }
         if(nbjoueurhumain==1){
             for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
@@ -1604,7 +1610,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
             }
-            
+            possedejardin=false;
         }
         if(nbjoueurhumain==2){
             for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
@@ -1625,8 +1631,9 @@ void Partie::findejeu(){
                 }
             }
             if(possedejardin){
-                totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
+                totalpointj1+=(int) (allplayer.at(0)->Deck.size())/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
                 if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj2+=1;
@@ -1647,6 +1654,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
             }
+            possedejardin=false;
         }
         if(nbjoueurhumain==3){
             for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
@@ -1669,6 +1677,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
                 if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj2+=1;
@@ -1689,6 +1698,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(2)->Deck.size(); y++){
                 if(allplayer.at(2)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj3+=1;
@@ -1709,6 +1719,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj3+=(int) allplayer.at(2)->Deck.size()/10;
             }
+            possedejardin=false;
         }
         if(nbjoueurhumain==4){
             for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
@@ -1731,6 +1742,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
                 if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj2+=1;
@@ -1751,6 +1763,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(2)->Deck.size(); y++){
                 if(allplayer.at(2)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj3+=1;
@@ -1771,6 +1784,7 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj3+=(int) allplayer.at(2)->Deck.size()/10;
             }
+            possedejardin=false;
             for(int y=0; y<allplayer.at(3)->Deck.size(); y++){
                 if(allplayer.at(3)->Deck.at(y).first->nom=="Domaine"){
                     totalpointj4+=1;
@@ -1791,12 +1805,14 @@ void Partie::findejeu(){
             if(possedejardin){
                 totalpointj4+=(int) allplayer.at(3)->Deck.size()/10;
             }
+            possedejardin=false;
         }
         premierentre=false;
     }
         
         std::string whowon;
         std::vector<int> maxelement = {totalpointj1, totalpointj2, totalpointj3, totalpointj4};
+        std::cout << " " << totalpointj1 << " " << totalpointj2 << " " << totalpointj3 << " " << totalpointj4;
         std::sort(maxelement.begin(), maxelement.end());
         int max = maxelement.at(3);
         if(max==totalpointj4){
