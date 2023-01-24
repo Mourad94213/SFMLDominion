@@ -11,6 +11,7 @@ bool phaseaction=true;
 bool boutonachat=false;
 bool boutonaction = false;
 bool entrer=true;
+int comptedeckvide=0;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -226,6 +227,31 @@ void Partie::initObjet(){
     this->boutonselectioncartesrng->setOrigin(sf::Vector2f(735/2,339/2));
     this->boutonselectioncartesrng->setPosition(sf::Vector2f(1600,window->getSize().y/2+220));
 
+    this->nbrachattext = new sf::Texture();
+    this->nbrachattext->loadFromFile("assets/objet/achat.png");
+    this->actiontext = new sf::Texture();
+    this->actiontext->loadFromFile("assets/objet/shield.png");
+    this->goldtext = new sf::Texture();
+    this->goldtext->loadFromFile("assets/objet/coin.png");
+
+    this->nbrachatimg = new sf::Sprite();
+    this->nbrachatimg->setTexture(*nbrachattext);
+    this->nbrachatimg->setScale(sf::Vector2f(0.13,0.13));
+    this->nbrachatimg->setOrigin(sf::Vector2f(555/2,450/2));
+    this->nbrachatimg->setPosition(sf::Vector2f(1700,90));
+
+    this->actionimg = new sf::Sprite();
+    this->actionimg->setTexture(*actiontext);
+    this->actionimg->setScale(sf::Vector2f(0.13,0.13));
+    this->actionimg->setOrigin(sf::Vector2f(512/2,512/2));
+    this->actionimg->setPosition(sf::Vector2f(1780,90));
+
+    this->goldimg = new sf::Sprite();
+    this->goldimg->setTexture(*goldtext);
+    this->goldimg->setScale(sf::Vector2f(0.12,0.12));
+    this->goldimg->setOrigin(sf::Vector2f(512/2,512/2));
+    this->goldimg->setPosition(sf::Vector2f(1610,90));
+
     // BACKGROUND //
 
     this->backgroundtext = new sf::Texture();
@@ -421,6 +447,25 @@ void Partie::initText()
     this->selectioncarterng->setOutlineColor(sf::Color::Black);
     this->selectioncarterng->setFillColor(sf::Color(252,238,170));
     this->selectioncarterng->setPosition(sf::Vector2f(1535,700));
+
+    this->phaseactuelle = new sf::Text();
+    this->phaseactuelle->setFont(*font);
+    this->phaseactuelle->setString("Phase d'action");
+    this->phaseactuelle->setCharacterSize(70);
+    this->phaseactuelle->setOutlineThickness(2);
+    this->phaseactuelle->setOutlineColor(sf::Color::Black);
+    this->phaseactuelle->setFillColor(sf::Color(252,238,170));
+    this->phaseactuelle->setPosition(sf::Vector2f(1400,200));
+
+    this->terminer = new sf::Text();
+    this->terminer->setFont(*font);
+    this->terminer->setString("Terminer la phase actuelle");
+    this->terminer->setCharacterSize(30);
+    this->terminer->setOutlineThickness(2);
+    this->terminer->setOutlineColor(sf::Color::Black);
+    this->terminer->setFillColor(sf::Color(252,238,170));
+    this->terminer->setPosition(sf::Vector2f(1500,380));
+
 }
 
 
@@ -469,7 +514,7 @@ void Partie::run()
         this->choixselection();
         this->jeu();
         this->regle();
-        //this->render();
+        this->findejeu();
     }
 }
 
@@ -477,6 +522,7 @@ void Partie::menu(){
     if(this->menubool==true){
         this->jeubool=false;
         this->reglebool=false;
+        this->finjeu=false;
         this->window->clear();
         if(this->ev.type==sf::Event::MouseButtonPressed){
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -485,12 +531,14 @@ void Partie::menu(){
                     jeubool=false;
                     reglebool=false;
                     menubool=false;
+                    finjeu=false;
                 }
                 if(this->Rbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !selectionbool){
                     reglebool=true;
                     selectionbool=false;
                     jeubool=false;
                     menubool=false;
+                    finjeu=false;
                 }
                 if(this->Lbutton->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))  && !jeubool && !reglebool && !selectionbool){
                     this->window->close();
@@ -632,6 +680,7 @@ void Partie::choixselection(){
                     menubool=false;
                     jeubool=true;
                     reglebool=false;
+                    finjeu=false;
                 }
                 if(this->boutonselectioncartes10->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Forgeron, 10));
@@ -666,6 +715,7 @@ void Partie::choixselection(){
                     menubool=false;
                     jeubool=true;
                     reglebool=false;
+                    finjeu=false;
                 }
             }
         }    
@@ -874,15 +924,48 @@ void Partie::setupcard(){
 
     this->finachat = new sf::Sprite();
     this->finachat->setTexture(*buttontext);
-    this->finachat->setScale(sf::Vector2f(0.2,0.2));
+    this->finachat->setScale(sf::Vector2f(0.5,0.4));
     this->finachat->setOrigin(sf::Vector2f(820/2,304/2));
     this->finachat->setPosition(sf::Vector2f(1600,400));
 
     this->finaction = new sf::Sprite();
     this->finaction->setTexture(*buttontext);
-    this->finaction->setScale(sf::Vector2f(0.2,0.2));
+    this->finaction->setScale(sf::Vector2f(0.5,0.4));
     this->finaction->setOrigin(sf::Vector2f(820/2,304/2));
     this->finaction->setPosition(sf::Vector2f(1600,400));
+
+    
+    this->action = new sf::Text;
+    this->action->setFont(*font);
+    this->action->setString(std::to_string(jtest->action));
+    this->action->setCharacterSize(50);
+    this->action->setOutlineThickness(1);
+    this->action->setOutlineColor(sf::Color::Black);
+    this->action->setFillColor(sf::Color(252,238,170));
+    this->action->setPosition(sf::Vector2f(1760,100));
+
+    
+    this->nbrachat = new sf::Text;
+    this->nbrachat->setFont(*font);
+    this->nbrachat->setString(std::to_string(jtest->nbrachat));
+    this->nbrachat->setCharacterSize(50);
+    this->nbrachat->setOutlineThickness(1);
+    this->nbrachat->setOutlineColor(sf::Color::Black);
+    this->nbrachat->setFillColor(sf::Color(252,238,170));
+    this->nbrachat->setPosition(sf::Vector2f(1680,100));
+    
+    this->gold = new sf::Text;
+    this->gold->setFont(*font);
+    this->gold->setString(std::to_string(jtest->achat));
+    this->gold->setCharacterSize(50);
+    this->gold->setOutlineThickness(1);
+    this->gold->setOutlineColor(sf::Color::Black);
+    this->gold->setFillColor(sf::Color(252,238,170));
+    this->gold->setPosition(sf::Vector2f(1600,100));
+
+    this->panneauRegle->setScale(0.12,0.05);
+    this->panneauRegle->setOrigin(sf::Vector2f(2637/2,2777/2));
+    this->panneauRegle->setPosition(sf::Vector2f(1700,100));
 }
 
 /*Joueur* Partie::creerjoueur(){
@@ -940,12 +1023,14 @@ void Partie::actualisercarte(){
     this->selectioncarte10->setString(std::to_string(Partie::AllCarte.at(14).second));
     this->selectioncarte->setString(std::to_string(Partie::AllCarte.at(15).second));
     this->selectioncarterng->setString(std::to_string(Partie::AllCarte.at(16).second));
+    this->action->setString(std::to_string(jtest->action));
+    this->nbrachat->setString(std::to_string(jtest->nbrachat));
+    this->gold->setString(std::to_string(jtest->achat));
 }
 
 void Partie::jeu(){
     if(this->jeubool==true){
         this->window->clear();
-        actualisercarte();
         
         if(!jeustarted){
             this->setupcard();
@@ -975,6 +1060,7 @@ void Partie::jeu(){
             }
         }*/
         }
+        actualisercarte();
         jeustarted=true;
         /*switch (nbjoueurhumain)
         {
@@ -1053,7 +1139,7 @@ void Partie::jeu(){
             }
         }
 
-        for(int i=0; i<jtest->Defausse.size(); i++){
+        /*for(int i=0; i<jtest->Defausse.size(); i++){
             jtest->Defausse.at(i).second->setPosition(sf::Vector2f(1700-incrmain,100));
             //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
             //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
@@ -1069,7 +1155,7 @@ void Partie::jeu(){
             window->draw(*jtest->Deck.at(i).second);
             incrmain+=150;
         }
-        incrmain=0;
+        incrmain=0;*/
 
         for(int i=0; i<jtest->Main.size(); i++){
             jtest->Main.at(i).second->setPosition(sf::Vector2f(1700-incrmain,750));
@@ -1079,6 +1165,16 @@ void Partie::jeu(){
             incrmain+=150;
         }
         incrmain=0;
+
+        for(int i=0; i<jtest->plateau.size(); i++){
+            jtest->plateau.at(i).second->setPosition(sf::Vector2f(1700-incrmain,500));
+            //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
+            //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
+            window->draw(*jtest->plateau.at(i).second);
+            incrmain+=150;
+        }
+        incrmain=0;
+
 
 
             window->draw(*this->chiffre0ia);
@@ -1098,8 +1194,18 @@ void Partie::jeu(){
             window->draw(*this->selectioncarte10);
             window->draw(*this->selectioncarte);
             window->draw(*this->selectioncarterng);
+            window->draw(*this->panneauRegle);
+            window->draw(*this->nbrachat);
+            window->draw(*this->gold);
+            window->draw(*this->action);
+            window->draw(*this->nbrachatimg);
+            window->draw(*this->goldimg);
+            window->draw(*this->actionimg);
+            window->draw(*this->phaseactuelle);
+            window->draw(*this->terminer);
         //std::cout << jtest->Main.size();
         if(phaseaction){
+            
             if(entrer){
                 for(int i=0; i<5; i++){
                     if(jtest->Deck.size()==0){
@@ -1125,6 +1231,11 @@ void Partie::jeu(){
             entrer=false;
             }
             window->draw(*this->finachat);
+            this->phaseactuelle->setString("Phase d'action");
+            window->draw(*this->phaseactuelle);
+            this->terminer->setString("Terminer la phase d'action");
+            this->terminer->setPosition(sf::Vector2f(1460,380));
+            window->draw(*this->terminer);
             for(int i=0; i<Partie::AllCarte.size(); i++){
                 Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(255,255,255));
             }
@@ -1137,34 +1248,31 @@ void Partie::jeu(){
                     }
                 }
             }
-            if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+            /*if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                 if(!button_pressed){
                         if(jtest->Main.at(0).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                            jtest->action--;
-                            jtest->Main.at(0).first->appliquer_effet(jtest, allplayer);
-                        }
-                        if(jtest->Main.at(1).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                            jtest->action--;
-                            jtest->Main.at(1).first->appliquer_effet(jtest, allplayer);
-                        }
-                        if(jtest->Main.at(2).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                            jtest->action--;
-                            jtest->Main.at(2).first->appliquer_effet(jtest, allplayer);
+                            jtest->piocher();
+                            button_pressed=true;
                         }
                 }
-            }
-            std::cout << allplayer.size();
+            }*/
+            if(jtest->action>0){
             for(int i=0; i<jtest->Main.size(); i++){
-                std::cout << "(" << i << " " << jtest->Main.size() << ")";
+                //std::cout << "(" << i << " " << jtest->Main.size() << ")";
                 if(jtest->Main.at(i).first->nom!="Cuivre" && jtest->Main.at(i).first->nom!="Argent" && jtest->Main.at(i).first->nom!="Or"
                 && jtest->Main.at(i).first->nom!="Malediction" && jtest->Main.at(i).first->nom!="Duche" && jtest->Main.at(i).first->nom!="Province"
                 && jtest->Main.at(i).first->nom!="Domaine"){
                     if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                             if(!button_pressed){
-                                    if(jtest->Main.at(i).first->Phycarte->at(9)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
+                                    if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                                         jtest->action--;
-                                        //jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
+                                        jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
+                                        jtest->plateau.push_back(jtest->Main.at(i));
+                                        jtest->Main.erase(std::find(jtest->Main.begin(), jtest->Main.end(), jtest->Main.at(i)));
+                                        button_pressed=true;
                                     }
+                                }
                             }
                     }
                     for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
@@ -1182,19 +1290,31 @@ void Partie::jeu(){
                 
             }
         }
+        }
         if(phaseachat){
+            if(Partie::AllCarte.at(5).second==0 || comptedeckvide>=3){
+                finjeu=true;
+                jeubool=false;
+            }
+            
             window->draw(*this->finaction);
+            this->phaseactuelle->setString("Phase d'achat");
+            window->draw(*this->phaseactuelle);
+            this->terminer->setString("Terminer le tour");
+            this->terminer->setPosition(sf::Vector2f(1520,380));
+             window->draw(*this->terminer);
             if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                 if(finaction->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                     if(!boutonachat){
                         for(int i=0; i<jtest->plateau.size(); i++){
-                            jtest->defausserplateau(jtest->plateau.at(i));
+                            jtest->Defausse.push_back(jtest->plateau.at(i));
                         }
-                        for(int i=0; i<5; i++){
-                            std::cout << jtest->Main.at(0).first->nom;
-                            jtest->defaussermain(jtest->Main.at(0));
-                            
+                        for(int i=0; i<jtest->Main.size(); i++){
+                            //std::cout << jtest->Main.at(0).first->nom;
+                            jtest->Defausse.push_back(jtest->Main.at(i));    
                         }
+                        jtest->Main.clear();
+                        jtest->plateau.clear();
                         jtest->achat=0;
                         jtest->action=1;
                         jtest->nbrachat=1;
@@ -1244,9 +1364,12 @@ void Partie::jeu(){
                                                 jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                                 //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            jtest->nbrachat--;
-                                            jtest->achat-=Partie::AllCarte.at(i).first->cout;
+                                            //jtest->nbrachat--;
+                                            //jtest->achat-=Partie::AllCarte.at(i).first->cout;
                                             Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+                                            if(Partie::AllCarte.at(i).second==0){
+                                                comptedeckvide++;
+                                            }
                                             button_pressed=true;
                                         }
                                     }
@@ -1286,6 +1409,34 @@ void Partie::jeu(){
         this->window->display();
 
         
+    }
+}
+
+
+void Partie::findejeu(){
+    if(finjeu==true){
+        window->clear();
+        /*if(this->finjeu==true){
+            for(int i=0; i<allplayer.size(); i++){
+                for(int y=0; y<allplayer.at(i)->Deck.size(); y++){
+                // if(std::static_pointer_cast<Victoire> (allplayer.at(i)->Deck.at(y).first.valeur))
+                }
+            }
+            
+        }*/
+        std::string whowon = "Joueur " + std::to_string(jtest->getid()) + " a gagne la partie !";
+        this->victoire = new sf::Text;
+            this->victoire->setFont(*font);
+            this->victoire->setString(whowon);
+            this->victoire->setCharacterSize(100);
+            this->victoire->setOutlineThickness(2);
+            this->victoire->setOutlineColor(sf::Color::Black);
+            this->victoire->setFillColor(sf::Color(252,238,170));
+            this->victoire->setPosition(sf::Vector2f(window->getSize().x/2 - 400,window->getSize().y/2));
+
+        window->draw(sf::Sprite(*this->backgroundtext));
+        window->draw(*this->victoire);
+        window->display();
     }
 }
 

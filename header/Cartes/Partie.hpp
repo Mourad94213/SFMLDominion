@@ -83,6 +83,12 @@ private:
     sf::Sprite *boutonselectioncartes;
     sf::Sprite *boutonselectioncartes10;
     sf::Sprite *boutonselectioncartesrng;
+    sf::Sprite *nbrachatimg;
+    sf::Sprite *actionimg;
+    sf::Sprite *goldimg;
+    sf::Texture *nbrachattext;
+    sf::Texture *actiontext;
+    sf::Texture *goldtext;
     sf::Text *regletop;
     sf::Text *regletext;
     sf::Text *text;
@@ -102,11 +108,18 @@ private:
     sf::Text *selectioncarte;
     sf::Text *selectioncarte10;
     sf::Text *selectioncarterng;
+    sf::Text *nbrachat;
+    sf::Text *action;
+    sf::Text *gold;
+    sf::Text *victoire;
+    sf::Text *phaseactuelle;
+    sf::Text *terminer;
     sf::Texture *backgroundtext;
     bool menubool=true;
     bool selectionbool;
     bool jeubool;
     bool reglebool;
+    bool finjeu;
 public:
     static std::vector<std::pair<Cartes*, int>> AllCarte;
     Partie();
@@ -120,7 +133,7 @@ public:
     void choixselection();
     void jeu();
     void regle();
-
+    void findejeu();
 };
 
 #endif

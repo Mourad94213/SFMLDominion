@@ -3,7 +3,7 @@
 void Village::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
     j->piocher();
-    j->achat+=2;
+    j->action+=2;
 }
 
 Village::Village(std::string name, int price, int money, int buy, int wdraw, int acti)
