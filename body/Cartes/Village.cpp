@@ -3,6 +3,15 @@
 void Village::appliquer_effet(Joueur *j, std::vector<Joueur*> alljoueur)
 {
     j->piocher();
+    if(j->Main.at(j->Main.size()-1).first->nom=="Cuivre"){
+            j->achat++;
+        }
+        else if(j->Main.at(j->Main.size()-1).first->nom=="Argent"){
+            j->achat+=2;
+        }
+        else if(j->Main.at(j->Main.size()-1).first->nom=="Or"){
+            j->achat+=3;
+        }
     j->action+=2;
 }
 

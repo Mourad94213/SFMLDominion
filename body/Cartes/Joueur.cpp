@@ -4,6 +4,7 @@ int Joueur::id=0;
 
 Joueur::Joueur(){
     id++;
+    //vraiid=id;
     //std::cout<<nbrachat;
 }
 
@@ -46,6 +47,12 @@ void Joueur::piocher(){
         this->Defausse.clear();
         std::shuffle(std::begin(this->Deck), std::end(this->Deck), std::random_device());
     }
-    this->Main.push_back(this->Deck.at(0));
-    this->Deck.erase(this->Deck.begin());
+    if(this->Deck.size()==0 && this->Defausse.size()==0){
+        // pioche pas
+    }
+    else{
+        this->Main.push_back(this->Deck.at(0));
+        this->Deck.erase(this->Deck.begin());
+    }
+    
 }

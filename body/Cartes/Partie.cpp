@@ -12,6 +12,16 @@ bool boutonachat=false;
 bool boutonaction = false;
 bool entrer=true;
 int comptedeckvide=0;
+bool changerjoueur=false;
+int joueurplus=0;
+int totalpointj1=0;
+int totalpointj2=0;
+int totalpointj3=0;
+int totalpointj4=0;
+bool premierentre=true;
+bool effetcellar=false;
+bool workshopbool=false;
+bool possedejardin=false;
 std::vector<Cartes*> cartechoisijoueur;
 Cellar      *Cave           = new Cellar("Cellar", 2, 0, 0, 0, 1);
 Remodel     *Renovation     = new Remodel("Remodel", 4, 0, 0, 0, 0);
@@ -47,7 +57,9 @@ Victoire *Province = new Victoire("Province",8,6);
 Victoire *Malediction = new Victoire("Malediction",0,-1);
 Joueur *jtest = new Joueur();
 Joueur *jtest2 = new Joueur();
-std::vector<Joueur*> allplayer = {jtest, jtest2};
+Joueur *jtest3 = new Joueur();
+Joueur *jtest4 = new Joueur();
+std::vector<Joueur*> allplayer = {jtest, jtest2, jtest3, jtest4};
 
 void Partie::initVariables()
 {
@@ -455,7 +467,7 @@ void Partie::initText()
     this->phaseactuelle->setOutlineThickness(2);
     this->phaseactuelle->setOutlineColor(sf::Color::Black);
     this->phaseactuelle->setFillColor(sf::Color(252,238,170));
-    this->phaseactuelle->setPosition(sf::Vector2f(1400,200));
+    this->phaseactuelle->setPosition(sf::Vector2f(1300,200));
 
     this->terminer = new sf::Text();
     this->terminer->setFont(*font);
@@ -684,15 +696,15 @@ void Partie::choixselection(){
                 }
                 if(this->boutonselectioncartes10->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && !jeubool && !reglebool && !menubool){
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Forgeron, 10));
-                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Cave, 10));
-                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Chapelle, 10));
-                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Renovation, 10));  
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(SalleDuConseil, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(festival, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Laboratoire, 10));  
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(village, 10)); 
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Bucheron, 10)); 
-                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(atelier, 10)); 
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Jardins, 10)); 
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Sorciere, 10)); 
                     Partie::AllCarte.push_back(std::pair<Cartes*, int>(Marche, 10)); 
-                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(mine, 10));
+                    Partie::AllCarte.push_back(std::pair<Cartes*, int>(Douves, 10));
 
                     PreteurSurGage->~Moneylender();
                     Douves->~Moat();
@@ -968,13 +980,6 @@ void Partie::setupcard(){
     this->panneauRegle->setPosition(sf::Vector2f(1700,100));
 }
 
-/*Joueur* Partie::creerjoueur(){
-    if(!jeustarted){
-        Joueur *j1= new Joueur();
-        return j1;
-    }
-
-}*/
 
 /*void Partie::setupplayer(Joueur *j1){
     for(int i=1; i<8; i++){
@@ -1023,10 +1028,13 @@ void Partie::actualisercarte(){
     this->selectioncarte10->setString(std::to_string(Partie::AllCarte.at(14).second));
     this->selectioncarte->setString(std::to_string(Partie::AllCarte.at(15).second));
     this->selectioncarterng->setString(std::to_string(Partie::AllCarte.at(16).second));
-    this->action->setString(std::to_string(jtest->action));
-    this->nbrachat->setString(std::to_string(jtest->nbrachat));
-    this->gold->setString(std::to_string(jtest->achat));
+    this->action->setString(std::to_string(allplayer.at(joueurplus)->action));
+    this->nbrachat->setString(std::to_string(allplayer.at(joueurplus)->nbrachat));
+    this->gold->setString(std::to_string(allplayer.at(joueurplus)->achat));
 }
+
+
+
 
 void Partie::jeu(){
     if(this->jeubool==true){
@@ -1034,17 +1042,32 @@ void Partie::jeu(){
         
         if(!jeustarted){
             this->setupcard();
-            
-            //this->setupplayer(j1);
-            for(int i=0; i<7; i++){
-                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(cuivre, cuivre->Phycarte->at(Partie::AllCarte.at(0).second-1)));
+            if(nbjoueurhumain==1){
+                for(int i = 0; i<3; i++){
+                    allplayer.pop_back();
+                }      
+            }
+            else if(nbjoueurhumain==2){
+                for(int i = 0; i<2; i++){
+                    allplayer.pop_back();
+                }      
+            }
+            else if(nbjoueurhumain==3){
+                allplayer.pop_back();
+            }
+            for(int i=0; i<allplayer.size(); i++){
+                for(int y=0; y<7; y++){
+                allplayer.at(i)->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(cuivre, cuivre->Phycarte->at(Partie::AllCarte.at(0).second-1)));
                 Partie::AllCarte.at(0).second--;
+                }
+                for(int y=0;y<3;y++){
+                    allplayer.at(i)->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(Domaine, Domaine->Phycarte->at(Partie::AllCarte.at(3).second-1)));
+                    Partie::AllCarte.at(3).second--;
+                }
+                std::shuffle(std::begin(allplayer.at(i)->Deck), std::end(allplayer.at(i)->Deck), std::random_device());
             }
-            for(int i=0;i<3;i++){
-                jtest->Deck.push_back(std::pair<Cartes*,sf::RectangleShape*>(Domaine, Domaine->Phycarte->at(Partie::AllCarte.at(3).second-1)));
-                Partie::AllCarte.at(3).second--;
-            }
-            std::shuffle(std::begin(jtest->Deck), std::end(jtest->Deck), std::random_device());
+            //this->setupplayer(j1);
+            
             /*for(int i=0;i<5;i++){
                 jtest->piocher();
             }
@@ -1148,7 +1171,7 @@ void Partie::jeu(){
         }
         incrmain=0;
 
-        for(int i=0; i<jtest->Deck.size(); i++){
+        /*for(int i=0; i<jtest->Deck.size(); i++){
             jtest->Deck.at(i).second->setPosition(sf::Vector2f(1700-incrmain,400));
             //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
             //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
@@ -1156,21 +1179,21 @@ void Partie::jeu(){
             incrmain+=150;
         }
         incrmain=0;*/
-
-        for(int i=0; i<jtest->Main.size(); i++){
-            jtest->Main.at(i).second->setPosition(sf::Vector2f(1700-incrmain,750));
+    
+        for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
+            allplayer.at(joueurplus)->Main.at(i).second->setPosition(sf::Vector2f(1700-incrmain,750));
             //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
             //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
-            window->draw(*jtest->Main.at(i).second);
+            window->draw(*allplayer.at(joueurplus)->Main.at(i).second);
             incrmain+=150;
         }
         incrmain=0;
 
-        for(int i=0; i<jtest->plateau.size(); i++){
-            jtest->plateau.at(i).second->setPosition(sf::Vector2f(1700-incrmain,500));
+        for(int i=0; i<allplayer.at(joueurplus)->plateau.size(); i++){
+            allplayer.at(joueurplus)->plateau.at(i).second->setPosition(sf::Vector2f(1700-incrmain,500));
             //jtest->Main.at(i)->setPosition(sf::Vector2f(1700-incrmain,800));
             //jtest->Main.at(i)->Phycarte->at(1)->setPosition(sf::Vector2f(1700-incrmain,800));
-            window->draw(*jtest->plateau.at(i).second);
+            window->draw(*allplayer.at(joueurplus)->plateau.at(i).second);
             incrmain+=150;
         }
         incrmain=0;
@@ -1208,30 +1231,30 @@ void Partie::jeu(){
             
             if(entrer){
                 for(int i=0; i<5; i++){
-                    if(jtest->Deck.size()==0){
-                        for(int i=0; i<jtest->Defausse.size(); i++){
-                            jtest->Deck.push_back(jtest->Defausse.at(i));
+                    if(allplayer.at(joueurplus)->Deck.size()==0){
+                        for(int i=0; i<allplayer.at(joueurplus)->Defausse.size(); i++){
+                            allplayer.at(joueurplus)->Deck.push_back(allplayer.at(joueurplus)->Defausse.at(i));
                         }
-                        jtest->Defausse.clear();
-                        std::shuffle(std::begin(jtest->Deck), std::end(jtest->Deck), std::random_device());
+                        allplayer.at(joueurplus)->Defausse.clear();
+                        std::shuffle(std::begin(allplayer.at(joueurplus)->Deck), std::end(allplayer.at(joueurplus)->Deck), std::random_device());
                     }
-                    jtest->piocher();
+                    allplayer.at(joueurplus)->piocher();
                 }
-                for(int i=0; i<jtest->Main.size(); i++){
-                        if(jtest->Main.at(i).first->nom=="Cuivre"){
-                            jtest->achat++;
+                for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
+                        if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Cuivre"){
+                            allplayer.at(joueurplus)->achat++;
                         }
-                        else if(jtest->Main.at(i).first->nom=="Argent"){
-                            jtest->achat+=2;
+                        else if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Argent"){
+                            allplayer.at(joueurplus)->achat+=2;
                         }
-                        else if(jtest->Main.at(i).first->nom=="Or"){
-                            jtest->achat+=3;
+                        else if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Or"){
+                            allplayer.at(joueurplus)->achat+=3;
                         }
                     }
             entrer=false;
             }
             window->draw(*this->finachat);
-            this->phaseactuelle->setString("Phase d'action");
+            this->phaseactuelle->setString("Phase d'action joueur " + std::to_string(joueurplus+1));
             window->draw(*this->phaseactuelle);
             this->terminer->setString("Terminer la phase d'action");
             this->terminer->setPosition(sf::Vector2f(1460,380));
@@ -1256,34 +1279,57 @@ void Partie::jeu(){
                         }
                 }
             }*/
-            if(jtest->action>0){
-            for(int i=0; i<jtest->Main.size(); i++){
+            if(allplayer.at(joueurplus)->action>0){
+            for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
                 //std::cout << "(" << i << " " << jtest->Main.size() << ")";
-                if(jtest->Main.at(i).first->nom!="Cuivre" && jtest->Main.at(i).first->nom!="Argent" && jtest->Main.at(i).first->nom!="Or"
-                && jtest->Main.at(i).first->nom!="Malediction" && jtest->Main.at(i).first->nom!="Duche" && jtest->Main.at(i).first->nom!="Province"
-                && jtest->Main.at(i).first->nom!="Domaine"){
+                if(allplayer.at(joueurplus)->Main.at(i).first->nom!="Cuivre" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Argent" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Or"
+                && allplayer.at(joueurplus)->Main.at(i).first->nom!="Malediction" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Duche" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Province"
+                && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine"){
                     if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                             if(!button_pressed){
-                                for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
-                                    if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
-                                        jtest->action--;
-                                        jtest->Main.at(i).first->appliquer_effet(jtest, allplayer);
-                                        jtest->plateau.push_back(jtest->Main.at(i));
-                                        jtest->Main.erase(std::find(jtest->Main.begin(), jtest->Main.end(), jtest->Main.at(i)));
+                                for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
+                                    if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                        allplayer.at(joueurplus)->action--;
+                                        allplayer.at(joueurplus)->plateau.push_back(allplayer.at(joueurplus)->Main.at(i));
+                                        /*if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Cellar"){
+                                            //cellar(allplayer.at(joueurplus));
+                                            //effetcellar=true;
+                                            //while(effetcellar){
+                                                //std::cout << "A";
+                                                /*if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                                                    if(!button_pressed){
+                                                        if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                                                            allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->Main.at(i));
+                                                            allplayer.at(joueurplus)->piocher();
+                                                            button_pressed=true;
+                                                        }
+                                                    }
+                                                }*/
+                                                /*if(this->ev.key.code == sf::Keyboard::S){
+                                                     effetcellar=false;
+                                                }
+                                            //}
+                                        }
+                                        if(allplayer.at(joueurplus)->Main.at(i).first->nom=="Workshop"){
+                                            workshopbool=true;
+                                        }*/
+                                        allplayer.at(joueurplus)->plateau.at(allplayer.at(joueurplus)->plateau.size()-1).first->appliquer_effet(allplayer.at(joueurplus), allplayer);
+                                        allplayer.at(joueurplus)->Main.erase(std::find(allplayer.at(joueurplus)->Main.begin(), allplayer.at(joueurplus)->Main.end(), allplayer.at(joueurplus)->Main.at(i)));
                                         button_pressed=true;
                                     }
                                 }
+    
                             }
                     }
-                    for(int y=0; y<jtest->Main.at(i).first->Phycarte->size(); y++){
-                        if(jtest->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && jtest->Main.at(i).first->nom!="Cuivre" && jtest->Main.at(i).first->nom!="Argent" && jtest->Main.at(i).first->nom!="Or"
-                        && jtest->Main.at(i).first->nom!="Malediction" && jtest->Main.at(i).first->nom!="Duche" && jtest->Main.at(i).first->nom!="Province"
-                        && jtest->Main.at(i).first->nom!="Domaine" )
+                    for(int y=0; y<allplayer.at(joueurplus)->Main.at(i).first->Phycarte->size(); y++){
+                        if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && allplayer.at(joueurplus)->Main.at(i).first->nom!="Cuivre" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Argent" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Or"
+                        && allplayer.at(joueurplus)->Main.at(i).first->nom!="Malediction" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Duche" && allplayer.at(joueurplus)->Main.at(i).first->nom!="Province"
+                        && allplayer.at(joueurplus)->Main.at(i).first->nom!="Domaine" )
                         {
-                            jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
+                            allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
                         }
                         else{
-                            jtest->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
+                            allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
                         }
                     }
                 }
@@ -1298,7 +1344,7 @@ void Partie::jeu(){
             }
             
             window->draw(*this->finaction);
-            this->phaseactuelle->setString("Phase d'achat");
+            this->phaseactuelle->setString("Phase d'achat joueur " + std::to_string(joueurplus+1));
             window->draw(*this->phaseactuelle);
             this->terminer->setString("Terminer le tour");
             this->terminer->setPosition(sf::Vector2f(1520,380));
@@ -1306,18 +1352,30 @@ void Partie::jeu(){
             if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                 if(finaction->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
                     if(!boutonachat){
-                        for(int i=0; i<jtest->plateau.size(); i++){
-                            jtest->Defausse.push_back(jtest->plateau.at(i));
+                        for(int i=0; i<allplayer.at(joueurplus)->plateau.size(); i++){
+                            allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->plateau.at(i));
                         }
-                        for(int i=0; i<jtest->Main.size(); i++){
+                        for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
                             //std::cout << jtest->Main.at(0).first->nom;
-                            jtest->Defausse.push_back(jtest->Main.at(i));    
+                            allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->Main.at(i));    
                         }
-                        jtest->Main.clear();
-                        jtest->plateau.clear();
-                        jtest->achat=0;
-                        jtest->action=1;
-                        jtest->nbrachat=1;
+                        allplayer.at(joueurplus)->Main.clear();
+                        allplayer.at(joueurplus)->plateau.clear();
+                        
+                        allplayer.at(joueurplus)->achat=0;
+                        allplayer.at(joueurplus)->action=1;
+                        allplayer.at(joueurplus)->nbrachat=1;
+
+                        if(joueurplus==allplayer.size()-1){
+                            joueurplus=0;
+                        }
+                        else{
+                            joueurplus++;
+                        }
+
+                        std::cout << "| " << joueurplus << " " << allplayer.at(joueurplus)->achat << " " << allplayer.at(joueurplus)->action << " "
+                        << allplayer.at(joueurplus)->nbrachat << " ";
+                        
                         phaseachat=false;
                         phaseaction=true;
                         boutonachat=true;
@@ -1326,7 +1384,7 @@ void Partie::jeu(){
                 }
             }
             for(int i=0; i<Partie::AllCarte.size(); i++){
-                    if(Partie::AllCarte.at(i).first->cout>jtest->achat){
+                    if(Partie::AllCarte.at(i).first->cout>allplayer.at(joueurplus)->achat){
                         sf::Uint8 light = 100;
                         if(Partie::AllCarte.at(i).second>0){
                             Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
@@ -1334,38 +1392,38 @@ void Partie::jeu(){
                         
                     }
                     else{
-                        if(jtest->nbrachat>0){
+                        if(allplayer.at(joueurplus)->nbrachat>0){
                             if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
                                     if(!button_pressed){
                                         if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && Partie::AllCarte.at(i).second>0){
                                             if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                                 //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Argent"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Argent"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Or"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Or"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Malediction"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Malediction"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Domaine"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Domaine"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Duche"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Duche"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            if(Partie::AllCarte.at(i).first->nom=="Province"){
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                            else if(Partie::AllCarte.at(i).first->nom=="Province"){
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
                                             else{
-                                                jtest->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                                allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                                 //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
                                             }
-                                            //jtest->nbrachat--;
-                                            //jtest->achat-=Partie::AllCarte.at(i).first->cout;
+                                            //allplayer.at(joueurplus)->nbrachat--;
+                                            //allplayer.at(joueurplus)->achat-=Partie::AllCarte.at(i).first->cout;
                                             Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
                                             if(Partie::AllCarte.at(i).second==0){
                                                 comptedeckvide++;
@@ -1411,7 +1469,98 @@ void Partie::jeu(){
         
     }
 }
+/*
+void Partie::workshop(Joueur *j){
+    if(workshopbool==true){
+    int t=j->achat;
+    j->achat=4;
+    for(int i=0; i<Partie::AllCarte.size(); i++){
+        if(Partie::AllCarte.at(i).first->cout>4){
+            sf::Uint8 light = 100;
+            if(Partie::AllCarte.at(i).second>0){
+                Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
+            }
+            
+        }
+        else{
+            //if(allplayer.at(joueurplus)->nbrachat>0){
+                if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+                    if(!button_pressed){
+                            if(Partie::AllCarte.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))) && Partie::AllCarte.at(i).second>0){
+                                if(Partie::AllCarte.at(i).first->nom=="Cuivre"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                    //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Argent"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Or"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Malediction"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Domaine"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Duche"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else if(Partie::AllCarte.at(i).first->nom=="Province"){
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                else{
+                                    allplayer.at(joueurplus)->plateau.push_back(std::pair<Cartes*,sf::RectangleShape*>(Partie::AllCarte.at(i).first, Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                    //Partie::AllCarte.at(i).first->Phycarte->erase(std::find(Partie::AllCarte.at(i).first->Phycarte->begin(), Partie::AllCarte.at(i).first->Phycarte->end(), Partie::AllCarte.at(i).first->Phycarte->at(Partie::AllCarte.at(i).second-1)));
+                                }
+                                Partie::AllCarte.at(i).second = Partie::AllCarte.at(i).second-1;
+                                if(Partie::AllCarte.at(i).second==0){
+                                    comptedeckvide++;
+                                }
+                                workshopbool=false;
+                                button_pressed=true;
+                            }
+                        }
+                }
+                for(int y=0; y<Partie::AllCarte.at(i).first->Phycarte->size(); y++){
+                    if(Partie::AllCarte.at(i).first->Phycarte->at(y)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window))))
+                    {
+                        Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.75,0.75));
+                    }
+                    else{
+                        Partie::AllCarte.at(i).first->Phycarte->at(y)->setScale(sf::Vector2f(0.6,0.6));
+                    }
+                }
+            //}
+            /*else{
+                sf::Uint8 light = 100;
+                if(Partie::AllCarte.at(i).second>0){
+                    Partie::AllCarte.at(i).first->Phycarte->at(0)->setFillColor(sf::Color(light,light,light));
+                }
+            }
+        }
+    }
+    }
+}
 
+void Partie::cellar(Joueur *j){
+    for(int i=0; i<allplayer.at(joueurplus)->Main.size(); i++){
+        if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button==sf::Mouse::Left){
+            if(!button_pressed){
+                std::cout << button_pressed;
+                if(allplayer.at(joueurplus)->Main.at(i).first->Phycarte->at(0)->getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*window)))){
+                    allplayer.at(joueurplus)->Defausse.push_back(allplayer.at(joueurplus)->Main.at(i));
+                    allplayer.at(joueurplus)->piocher();
+                    button_pressed=true;
+                }
+            }
+        }
+        if(ev.type == sf::Event::MouseButtonReleased){
+            button_pressed=false;
+        }
+    }
+}
+*/
 
 void Partie::findejeu(){
     if(finjeu==true){
@@ -1424,7 +1573,244 @@ void Partie::findejeu(){
             }
             
         }*/
-        std::string whowon = "Joueur " + std::to_string(jtest->getid()) + " a gagne la partie !";
+    if(premierentre){
+        int max=0;
+        for(int i=0; i<allplayer.size(); i++){
+            for(int y=0; y<allplayer.at(i)->Main.size(); y++){
+                allplayer.at(i)->Deck.push_back(allplayer.at(i)->Main.at(y));
+            }
+            for(int y=0; y<allplayer.at(i)->Defausse.size(); y++){
+                allplayer.at(i)->Deck.push_back(allplayer.at(i)->Defausse.at(y));
+            }
+        }
+        if(nbjoueurhumain==1){
+            for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
+                if(allplayer.at(0)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj1+=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj1+=3;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Province"){
+                    totalpointj1+=5;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj1-=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
+            }
+            
+        }
+        if(nbjoueurhumain==2){
+            for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
+                if(allplayer.at(0)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj1+=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj1+=3;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Province"){
+                    totalpointj1+=5;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj1-=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
+                if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj2+=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj2+=3;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Province"){
+                    totalpointj2+=5;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj2-=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
+            }
+        }
+        if(nbjoueurhumain==3){
+            for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
+                if(allplayer.at(0)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj1+=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj1+=3;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Province"){
+                    totalpointj1+=5;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj1-=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
+                if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj2+=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj2+=3;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Province"){
+                    totalpointj2+=5;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj2-=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(2)->Deck.size(); y++){
+                if(allplayer.at(2)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj3+=1;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj3+=3;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Province"){
+                    totalpointj3+=5;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj3-=1;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj3+=(int) allplayer.at(2)->Deck.size()/10;
+            }
+        }
+        if(nbjoueurhumain==4){
+            for(int y=0; y<allplayer.at(0)->Deck.size(); y++){
+                if(allplayer.at(0)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj1+=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj1-=1;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj1+=3;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Province"){
+                    totalpointj1+=5;
+                }
+                else if(allplayer.at(0)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj1+=(int) allplayer.at(0)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(1)->Deck.size(); y++){
+                if(allplayer.at(1)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj2+=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj2+=3;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Province"){
+                    totalpointj2+=5;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj2-=1;
+                }
+                else if(allplayer.at(1)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj2+=(int) allplayer.at(1)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(2)->Deck.size(); y++){
+                if(allplayer.at(2)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj3+=1;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj3+=3;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Province"){
+                    totalpointj3+=5;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj3-=1;
+                }
+                else if(allplayer.at(2)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj3+=(int) allplayer.at(2)->Deck.size()/10;
+            }
+            for(int y=0; y<allplayer.at(3)->Deck.size(); y++){
+                if(allplayer.at(3)->Deck.at(y).first->nom=="Domaine"){
+                    totalpointj4+=1;
+                }
+                else if(allplayer.at(3)->Deck.at(y).first->nom=="Duche"){
+                    totalpointj4+=3;
+                }
+                else if(allplayer.at(3)->Deck.at(y).first->nom=="Province"){
+                    totalpointj4+=5;
+                }
+                else if(allplayer.at(3)->Deck.at(y).first->nom=="Malediction"){
+                    totalpointj4-=1;
+                }
+                else if(allplayer.at(3)->Deck.at(y).first->nom=="Gardens"){
+                    possedejardin=true;
+                }
+            }
+            if(possedejardin){
+                totalpointj4+=(int) allplayer.at(3)->Deck.size()/10;
+            }
+        }
+        premierentre=false;
+    }
+        
+        std::string whowon;
+        std::vector<int> maxelement = {totalpointj1, totalpointj2, totalpointj3, totalpointj4};
+        std::sort(maxelement.begin(), maxelement.end());
+        int max = maxelement.at(3);
+        if(max==totalpointj4){
+            whowon = "Joueur 4 a gagne la partie !\n Avec " + std::to_string(max) + " points";
+        }
+        if(max==totalpointj3){
+            whowon = "Joueur 3 a gagne la partie !\n Avec " + std::to_string(max) + " points";
+        }
+        if(max==totalpointj2){
+            whowon = "Joueur 2 a gagne la partie !\n Avec " + std::to_string(max) + " points";
+        }
+        if(max==totalpointj1){
+            whowon = "Joueur 1 a gagne la partie !\n Avec " + std::to_string(max) + " points";
+        }
         this->victoire = new sf::Text;
             this->victoire->setFont(*font);
             this->victoire->setString(whowon);

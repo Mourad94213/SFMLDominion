@@ -13,6 +13,7 @@ private:
     static int id;
 
 public:
+    //int vraiid;
     int action=1;
     int achat=0;
     int nbrachat=1;

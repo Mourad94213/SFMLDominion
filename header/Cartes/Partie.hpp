@@ -128,7 +128,9 @@ public:
     void run();
     void actualisercarte();
     void setupcard();
-    void setupplayer(Joueur*);
+    //void cellar(Joueur *j);
+    //void workshop(Joueur *j);
+    //void setupplayer(Joueur*);
     void menu();
     void choixselection();
     void jeu();
