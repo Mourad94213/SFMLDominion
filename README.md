@@ -18,3 +18,7 @@ Effectuez les 2 commandes suivantes et le programme s'executera
 make clean
 make run
 ```
+
+## Avertissement
+
+Aucune des textures utilisée dans le jeu ne sont les miennes, elles proviennent toutes du site [freepik](https://fr.freepik.com/)
