@@ -9,3 +9,12 @@ Vous aurez besoin de la librairie SFML, pour installez cliquez [ici](https://www
 ```bash
 sudo apt-get install libsfml-dev
 ```
+
+## Lancement
+
+Effectuez les 2 commandes suivantes et le programme s'executera
+
+```bash
+make clean
+make run
+```
